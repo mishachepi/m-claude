@@ -1,0 +1,21 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "m-claude-plugins",
+  "description": "Collection of plugins implementing a framework to create a personal assistant/manager for Claude Code",
+  "owner": {
+    "name": "Mikhail Chepkin"
+  },
+  "plugins": [
+    {
+      "name": "core",
+      "description": "Core plugin - self-learning, playbook-workflow, context, delegation",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/core",
+      "category": "productivity",
+      "strict": false
+    }
+  ]
+}
