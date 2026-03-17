@@ -14,9 +14,9 @@
 
 ## Agents
 
-| Agent | Description |
-|-------|-------------|
-| `updater` | Create command/skill from completed task |
+| Agent | Color | Description |
+|-------|-------|-------------|
+| `updater` | blue | Create command/skill from completed task |
 
 ## Skills
 

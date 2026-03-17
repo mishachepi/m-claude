@@ -24,7 +24,7 @@ Request → Playbook exists? → Execute
 | Plugin | Purpose |
 |--------|---------|
 | **core** | Self-learning workflow: init, learn, prompt-optimize |
-| **lead** | Parallel implementation via workmux worktrees |
+| **lead** | workmux setup and usage guide for parallel AI agent work |
 | **docs** | Documentation sync from code changes |
 | **research** | Multi-agent research + brainstorming |
 
@@ -35,7 +35,7 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 | File | Triggers | Purpose |
 |------|----------|---------|
 | `docs/plugin-core.md` | core, init, learn, prompt-optimize | Core plugin components |
-| `docs/plugin-lead.md` | lead, workmux, worktree, parallel | Lead plugin + workmux integration |
+| `docs/plugin-lead.md` | lead, workmux, worktree, parallel | workmux setup + skills guide |
 | `docs/plugin-docs.md` | docs, documentation, update docs | Docs plugin components |
 | `docs/plugin-research.md` | research, brainstorm, spec | Research plugin components |
 

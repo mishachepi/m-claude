@@ -6,8 +6,8 @@
 
 | Plugin | Purpose |
 |--------|---------|
-| [core](./plugins/core/) | Self-learning workflow — init, learn, optimize, prompt engineering |
-| [lead](./plugins/lead/) | Parallel implementation via workmux worktrees |
+| [core](./plugins/core/) | Self-learning workflow — init, learn, prompt-optimize |
+| [lead](./plugins/lead/) | workmux setup and usage guide for parallel AI agent work |
 | [docs](./plugins/docs/) | Keep documentation in sync with code changes |
 | [research](./plugins/research/) | Multi-agent research and brainstorming |
 
@@ -18,7 +18,7 @@
 3. **Delegation > execution** — route to the right tool/agent
 4. **Evolution is mandatory** — learnings → system improvements
 
-## Workflow Philosophy
+## Workflow
 
 ```
 Request → Playbook exists? → Execute
@@ -32,13 +32,16 @@ Request → Playbook exists? → Execute
 |------|------------|---------|
 | Claude Code | all | https://claude.ai/code |
 | plugin-dev | core | Claude Code marketplace |
-| workmux | lead | `brew install raine/tap/workmux` |
+| workmux | lead | `brew install raine/tap/workmux && workmux setup --skills` |
 | tmux | lead | `brew install tmux` |
 
 ## Quick Start
 
 ```bash
-# Install as Claude Code plugin
+# Install from marketplace
+claude mcp add-from-marketplace m-claude-plugins
+
+# Or install individual plugins
 claude plugin add ./plugins/core
 claude plugin add ./plugins/lead
 claude plugin add ./plugins/docs
@@ -54,19 +57,17 @@ claude plugin add ./plugins/research
 m-claude/
 ├── plugins/
 │   ├── core/          # Commands, agents, skills for self-learning
-│   ├── lead/          # workmux-based parallel implementation
+│   ├── lead/          # workmux setup and parallel agent orchestration
 │   ├── docs/          # Documentation sync from code changes
 │   └── research/      # Multi-agent research + brainstorming
 ├── docs/              # Framework documentation
 │   ├── plugin-core.md
 │   ├── plugin-lead.md
 │   ├── plugin-docs.md
-│   ├── plugin-research.md
-│   ├── prompt-engineering-guide.md
-│   └── context_engineering.md
+│   └── plugin-research.md
 └── CLAUDE.md          # Project instructions
 ```
 
 ## Documentation
 
-See `docs/` for detailed plugin documentation.
+See [`docs/`](./docs/) for detailed plugin documentation.

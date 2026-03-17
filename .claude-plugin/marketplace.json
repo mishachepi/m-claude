@@ -19,7 +19,7 @@
     },
     {
       "name": "lead",
-      "description": "Parallel implementation orchestrator — splits plans into workmux worktree agents",
+      "description": "workmux setup and usage guide — parallel AI agent orchestration with git worktrees",
       "version": "1.0.0",
       "author": {
         "name": "Mikhail Chepkin"

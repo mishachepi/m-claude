@@ -11,11 +11,11 @@
 
 ## Agents
 
-| Agent | Description |
-|-------|-------------|
-| `research` | Information gathering (web, docs, codebase) |
-| `search-subagent` | Parallel exploration worker |
-| `citation-agent` | Verify and add citations to report |
+| Agent | Color | Description |
+|-------|-------|-------------|
+| `research` | cyan | Information gathering (web, docs, codebase) |
+| `search-subagent` | cyan | Parallel exploration worker |
+| `citation-agent` | yellow | Verify and add citations to report |
 
 ## Flows
 

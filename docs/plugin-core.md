@@ -4,12 +4,12 @@ Self-learning workflow — determinism, delegation, evolution loop.
 
 ## Components
 
-| Type | Name | Purpose |
-|------|------|---------|
-| Command | `/init` | Initialize context system (local/global) |
-| Agent | `updater` | Create command/skill from completed task |
-| Skill | `learn` | Capture session learnings → rules, skills, CLAUDE.local.md |
-| Skill | `prompt-optimize` | Prompt engineering guide + CLAUDE.md audit |
+| Type | Name | Color | Purpose |
+|------|------|-------|---------|
+| Command | `/init` | — | Initialize context system (local/global) |
+| Agent | `updater` | blue | Create command/skill from completed task |
+| Skill | `learn` | — | Capture session learnings → rules, skills, CLAUDE.local.md |
+| Skill | `prompt-optimize` | — | Prompt engineering guide + CLAUDE.md audit |
 
 ## Dependency
 
