@@ -1,0 +1,32 @@
+# workmux config example for m-claude lead plugin
+# Copy to project root as .workmux.yaml or use global:
+#   workmux setup ~/dotfiles/workmux/config.yaml
+#
+# Docs: https://workmux.raine.dev/
+
+main_branch: main
+mode: window
+agent: claude
+theme: dark
+nerdfont: true
+
+# Naming
+worktree_naming: basename
+window_prefix: "wm-"
+
+# Panes: agent (focused) + shell for tests/git
+panes:
+  - command: <agent>
+    focus: true
+  - command: ""
+    split: horizontal
+    size: 10
+
+# Status icons in tmux window names
+status_icons:
+  working: "🤖"
+  waiting: "💬"
+  done: "✅"
+
+# Merge strategy
+merge_strategy: squash

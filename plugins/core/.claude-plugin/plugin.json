@@ -1,16 +1,17 @@
 {
   "name": "core",
   "version": "1.0.0",
-  "description": "Minimal self-learning system for Claude Code - focus on determinism, delegation + evolution loop.",
+  "description": "Self-learning workflow — init, learn, optimize, prompt engineering. Determinism + evolution loop.",
   "author": {
     "name": "mikhail_chepkin",
     "url": "https://github.com/mishachepi"
   },
-  "repository": "https://github.com/mishachepi/my-claude",
+  "repository": "https://github.com/mishachepi/m-claude",
   "keywords": [
     "self-learning",
     "determinism",
     "evolution",
-    "commands"
+    "learn",
+    "prompt-engineering"
   ]
 }

@@ -1,6 +1,6 @@
-Developbent of Claude Code plugins m-claude: AI manager
+Development of Claude Code plugins m-claude
 
-You already use this plugins and continue develop it.
+You already use these plugins and continue to develop them.
 
 ## Remember Core Beliefs
 1. **Context is power** — answer quality = context quality
@@ -17,6 +17,33 @@ Request → Playbook exists? → Execute
           Solve → Save as playbook
 ```
 
-**Playbooks** = commands, skills, agents — ready solutions.
+**Playbooks** = commands, skills, agents — prepared solutions.
 
-Don'f forget to update readme.md
+## Plugins
+
+| Plugin | Purpose |
+|--------|---------|
+| **core** | Self-learning workflow: init, learn, prompt-optimize |
+| **lead** | Parallel implementation via workmux worktrees |
+| **docs** | Documentation sync from code changes |
+| **research** | Multi-agent research + brainstorming |
+
+## Documentation
+
+Project documentation lives in `docs/`. Load relevant files when working on related topics.
+
+| File | Triggers | Purpose |
+|------|----------|---------|
+| `docs/plugin-core.md` | core, init, learn, prompt-optimize | Core plugin components |
+| `docs/plugin-lead.md` | lead, workmux, worktree, parallel | Lead plugin + workmux integration |
+| `docs/plugin-docs.md` | docs, documentation, update docs | Docs plugin components |
+| `docs/plugin-research.md` | research, brainstorm, spec | Research plugin components |
+
+## Prerequisites
+
+| Tool | Plugin | Install |
+|------|--------|---------|
+| plugin-dev | core | Claude Code marketplace |
+| workmux + skills | lead | `brew install raine/tap/workmux && workmux setup --skills` |
+
+Don't forget to update README.md after changes.

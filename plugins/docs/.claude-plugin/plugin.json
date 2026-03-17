@@ -1,0 +1,17 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "Documentation management — init docs structure, update docs from code changes",
+  "author": {
+    "name": "mikhail_chepkin",
+    "url": "https://github.com/mishachepi"
+  },
+  "repository": "https://github.com/mishachepi/m-claude",
+  "keywords": [
+    "documentation",
+    "docs",
+    "readme",
+    "claude-md",
+    "progressive-disclosure"
+  ]
+}

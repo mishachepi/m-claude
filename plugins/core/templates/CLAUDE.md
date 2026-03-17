@@ -1,3 +1,8 @@
+<!--
+  Global CLAUDE.md template
+  Managed by m-claude /core:init (global)
+-->
+
 ## Workflow
 
 ```
@@ -6,11 +11,11 @@ Task → Define goal → Find playbook/agent → Delegate → Analyze result
                     Solve with user → Offer to save as playbook
 ```
 
-**Playbook found:** Execute with specific subagent or via `playbook-executor` agent, analyze result.
+**Playbook found:** Execute with specific subagent or via `worker` agent, analyze result.
 
-**No playbook:** Solve task with user, then run `playbook-creator` to save solution as command or skill.
+**No playbook:** Solve task with user, then run `updater` to save solution as command or skill.
 
-IMPORTANT: Check ~/.claude/context_map.md (global) and ./.claude/context_map.md (local, higher priority) for context triggers.
+IMPORTANT: Check ~/.claude/CLAUDE.md (global) and ./CLAUDE.local.md (local, higher priority) for context triggers.
 
 ## Workflow Principles
 
@@ -23,12 +28,10 @@ IMPORTANT: Check ~/.claude/context_map.md (global) and ./.claude/context_map.md 
 ---
 ## Reflection, Evolution, Evolve
 
-**IMPORTANT:** After completing significant tasks, ALWAYS offer the user:
+After completing significant tasks, ALWAYS offer the user:
 ```
-**Context gap?** → `/core:create-context`
-**Repeatable?** → `/core:create-command`
-**Improve existing?** → `/core:update-command`
-**Capture learnings?** → `/flow:learn`
+**Improve existing?** → `/update`
+**Capture learnings?** → `/learn`
 ```
 
 **When to offer:**

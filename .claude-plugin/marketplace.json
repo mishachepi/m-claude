@@ -1,19 +1,52 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "m-claude-plugins",
-  "description": "Collection of plugins implementing a framework to create a personal assistant/manager for Claude Code",
+  "description": "Plugin framework for Claude Code — self-learning AI manager with determinism, delegation, and evolution",
   "owner": {
     "name": "Mikhail Chepkin"
   },
   "plugins": [
     {
       "name": "core",
-      "description": "Core plugin - self-learning, playbook-workflow, context, delegation",
+      "description": "Self-learning workflow — init, learn, optimize, prompt engineering",
       "version": "1.0.0",
       "author": {
         "name": "Mikhail Chepkin"
       },
       "source": "./plugins/core",
+      "category": "productivity",
+      "strict": false
+    },
+    {
+      "name": "lead",
+      "description": "Parallel implementation orchestrator — splits plans into workmux worktree agents",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/lead",
+      "category": "productivity",
+      "strict": false
+    },
+    {
+      "name": "docs",
+      "description": "Documentation management — init docs structure, update docs from code changes",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/docs",
+      "category": "productivity",
+      "strict": false
+    },
+    {
+      "name": "research",
+      "description": "Research and brainstorming — multi-agent research, structured spec creation",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/research",
       "category": "productivity",
       "strict": false
     }

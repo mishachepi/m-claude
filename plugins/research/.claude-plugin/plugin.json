@@ -1,0 +1,17 @@
+{
+  "name": "research",
+  "version": "1.0.0",
+  "description": "Research and brainstorming — multi-agent research with parallel subagents, structured brainstorming",
+  "author": {
+    "name": "mikhail_chepkin",
+    "url": "https://github.com/mishachepi"
+  },
+  "repository": "https://github.com/mishachepi/m-claude",
+  "keywords": [
+    "research",
+    "brainstorm",
+    "multi-agent",
+    "parallel-search",
+    "spec-creation"
+  ]
+}
