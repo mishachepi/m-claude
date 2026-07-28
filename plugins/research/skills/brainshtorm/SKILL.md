@@ -1,6 +1,9 @@
 ---
 name: brainshtorm
 description: Deep brainstorming and spec creation through structured interview. Use when user has an idea but needs to think it through, says "brainstorm", "let's think about", "spec out", or "help me plan".
+version: 1.0.0
+user-invocable: true
+allowed-tools: Read, Write, Edit, Glob, AskUserQuestion
 ---
 
 # Brainstorm
@@ -13,6 +16,22 @@ Transform a vague idea into a detailed specification through structured intervie
 - Need to explore tradeoffs and alternatives
 - Creating a spec/PRD for a feature or project
 - Planning before implementation
+
+## Requires a live human
+
+This skill is an interview: its entire value is the user's answers. It depends on
+`AskUserQuestion`, which does not exist in headless runs (`claude -p`, spawned agents,
+CI) and may be denied by permission settings.
+
+**Before Step 1, check whether `AskUserQuestion` is available.** If it is not:
+
+1. Stop. Do not run the interview.
+2. Do not invent answers on the user's behalf — a spec built from guessed answers looks
+   authoritative and is worthless, which is worse than no spec.
+3. Report: "brainshtorm needs an interactive session; `AskUserQuestion` is unavailable here."
+4. Offer the honest alternative: draft an **assumptions document** instead — the questions
+   that would have been asked, each with a proposed default and the risk of getting it
+   wrong — clearly labelled as unvalidated, for a human to answer later.
 
 ## Workflow
 
@@ -163,7 +182,7 @@ Create spec using template:
 
 **Save location:** Ask user where to save, suggest:
 - `./SPEC.md` — current directory
-- `~/.claude/.mai/context/specs/{name}.md` — MAI context
+- `./docs/specs/{name}.md` — alongside project documentation
 - User's preferred location
 
 ## Step 5: Review with User
@@ -193,7 +212,7 @@ Interview rounds: {count}
 Next steps:
 1. Review spec
 2. Share with stakeholders
-3. Start implementation with /mai:plan
+3. Start implementation
 ```
 
 ## Tips for Good Brainstorms

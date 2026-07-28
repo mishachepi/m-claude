@@ -6,3 +6,6 @@
 
 # OS
 .DS_Store
+
+# Smoke-test reports from spawned agents (evidence, not product)
+smoke/

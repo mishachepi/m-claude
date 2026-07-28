@@ -15,7 +15,7 @@ All artifacts are created **locally** in the current project (`./.claude/`). Nev
 ## References
 
 When writing prompts for skills or commands, follow best practices from:
-- `docs/prompt-engineering-guide.md` — Claude 4.x prompt engineering principles
+- `${CLAUDE_PLUGIN_ROOT}/skills/prompt-optimize/references/prompt-engineering.md` — Claude 4.x prompt engineering principles
 
 ## Flow
 
@@ -87,7 +87,7 @@ allowed-tools: {tools needed}
 
 # {Title}
 
-{Instructions following prompt-engineering-guide.md principles}
+{Instructions following the prompt-engineering reference principles}
 ```
 
 #### For Commands:
@@ -126,4 +126,4 @@ If yes, repeat from step 1. If no, done.
 - Keep rules atomic: one concept per rule
 - Everything stays local: `./.claude/` and `./CLAUDE.local.md`
 - Rules take effect immediately in new conversations
-- For skills/commands, follow prompt-engineering-guide.md principles: be explicit, add context (WHY), use positive instructions
+- For skills/commands, follow the prompt-engineering reference principles: be explicit, add context (WHY), use positive instructions

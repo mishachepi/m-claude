@@ -23,6 +23,7 @@ Analyze CLAUDE.md files and suggest improvements.
 - `local` → `./CLAUDE.local.md`
 - `global` → `~/.claude/CLAUDE.md`
 - `all` or no input → both
+- an explicit file path → that file, and only that file (scope keywords are ignored)
 
 #### Checklist
 
@@ -34,6 +35,8 @@ Analyze CLAUDE.md files and suggest improvements.
 | No duplicate sections | unique headers | Avoid confusion |
 | Has required sections | Workflow, Principles | Core structure |
 | No TODO/FIXME | 0 | Unfinished work |
+| No contradicting instructions | 0 | Two rules that cannot both be obeyed make the file unusable |
+| No unresolvable vagueness | 0 | "be smart", "handle properly" carry no decision procedure |
 
 #### Analysis Steps
 
@@ -43,6 +46,13 @@ Analyze CLAUDE.md files and suggest improvements.
 4. **Duplicates** — find duplicate headers
 5. **Unfinished** — search TODO, FIXME, XXX
 6. **Long lines** — count lines > 120 chars
+7. **Contradictions** — read the instructions and pair up any two that cannot both be followed
+   (e.g. "always use tabs" vs "never use tabs", "ask before editing" vs "never ask"). Steps 1-6
+   are mechanical and a script can do them; this step and step 8 need actual reading, and they
+   are the ones that decide whether the file is usable at all. Report each pair with both line
+   numbers and say which one to keep — never report a contradiction without a resolution.
+8. **Vagueness** — flag instructions that state no observable criterion ("be smart about it",
+   "handle errors properly"). For each, propose the concrete rule that was probably meant.
 
 #### Report
 
@@ -56,6 +66,8 @@ Sections: {count} {OK | WARNING}
 Required: {OK | MISSING: list}
 Duplicates: {OK | FOUND: list}
 Unfinished: {OK | FOUND: count}
+Contradictions: {OK | FOUND: "{rule A}" (L{n}) vs "{rule B}" (L{m}) → keep {which}}
+Vagueness: {OK | FOUND: "{quote}" (L{n}) → suggest "{concrete rule}"}
 
 Suggestions:
 - {suggestion 1}
@@ -64,11 +76,16 @@ Suggestions:
 Overall: {GOOD | NEEDS ATTENTION}
 ```
 
+A file that passes every mechanical check but contradicts itself is NOT `GOOD` — contradictions
+and vagueness outrank size and formatting in the overall verdict.
+
 #### Fix Offers
 
 - File too large → offer to split
 - TODOs found → offer to review
 - Missing sections → offer to add
+- Contradiction found → offer to delete the losing rule (never keep both)
+- Vague instruction → offer to replace it with the concrete rule
 
 ### Mode 2: Prompt Engineering Guide
 

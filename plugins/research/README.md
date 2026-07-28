@@ -13,7 +13,7 @@
 
 | Agent | Color | Description |
 |-------|-------|-------------|
-| `research` | cyan | Information gathering (web, docs, codebase) |
+| `research-agent` | cyan | Information gathering (web, docs, codebase) |
 | `search-subagent` | cyan | Parallel exploration worker |
 | `citation-agent` | yellow | Verify and add citations to report |
 
