@@ -21,7 +21,11 @@ When writing prompts for skills or commands, follow best practices from:
 
 ### 1. Ask What to Remember
 
-Ask the user:
+**Skip this step when the learning was already supplied** — as arguments to the skill, or stated in
+the conversation just before it was invoked. Asking a user to retype what they just wrote is the
+fastest way to make a skill annoying. Go straight to Step 2 and classify what you were given.
+
+Otherwise ask the user:
 
 ```
 What would you like to remember from this session?
@@ -43,9 +47,15 @@ Based on the user's response, classify:
 | Type | When | Where |
 |------|------|-------|
 | **Rule** | Behavioral preference, coding convention, "always/never do X" | `./.claude/rules/{name}.md` |
+| **Gotcha** | Discovered behavior of a tool or system + the workaround ("X fails until you Y") | `./.claude/rules/{name}.md` |
 | **Skill** | Complex reusable workflow (needs references, multi-step) | `./.claude/skills/{name}/SKILL.md` |
 | **Command** | Simple reusable action (<10 steps) | `./.claude/commands/{name}.md` |
 | **Context update** | Project info, architecture decisions, current focus | `./CLAUDE.local.md` |
+
+**Check for an existing home first.** Glob `./.claude/rules/*.md` (and the relevant sibling
+directory) and read anything on the same subject. If the learning refines something already
+recorded, edit that file instead of creating a second one — two files on one subject means the next
+agent reads whichever it finds first. Say which you chose and why.
 
 Present your classification:
 
@@ -60,6 +70,11 @@ Look good?
 ```
 
 Wait for user confirmation before saving.
+
+Headless (`AskUserQuestion` unavailable — `claude -p`, spawned agents, CI): save without waiting,
+then report the path and the classification so the choice is visible in the transcript. The user
+asked for the learning to be captured; losing it to an unanswerable prompt serves nobody. Overwriting
+an existing file still needs a human — headless, write a sibling file and flag the overlap instead.
 
 ### 3. Save
 
@@ -122,7 +137,8 @@ If yes, repeat from step 1. If no, done.
 
 ## Notes
 
-- Always ask before saving — don't auto-capture
+- Always ask before saving — don't auto-capture (headless: save and report, see Step 2)
+- Never silently overwrite: check `./.claude/rules/` for an existing file on the subject first
 - Keep rules atomic: one concept per rule
 - Everything stays local: `./.claude/` and `./CLAUDE.local.md`
 - Rules take effect immediately in new conversations

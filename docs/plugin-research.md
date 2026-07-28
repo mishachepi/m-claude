@@ -8,9 +8,9 @@ Research and brainstorming — multi-agent research with parallel subagents, str
 |------|------|-------|---------|
 | Skill | `lead-research` | — | Orchestrator methodology for parallel research |
 | Skill | `brainshtorm` | — | Deep brainstorming → spec document |
-| Agent | `research` | cyan | Information gathering (web, docs, codebase) |
-| Agent | `search-subagent` | cyan | Parallel exploration worker |
-| Agent | `citation-agent` | yellow | Verify and add citations to report |
+| Agent | `research:research-agent` | cyan | Information gathering (web, docs, codebase) |
+| Agent | `research:search-subagent` | cyan | Parallel exploration worker |
+| Agent | `research:citation-agent` | yellow | Verify and add citations to report |
 
 ## Flows
 

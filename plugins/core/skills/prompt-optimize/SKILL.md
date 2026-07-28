@@ -93,6 +93,20 @@ Triggered by: "write a prompt", "improve prompt", "prompt engineering"
 
 Use these principles when writing or reviewing prompts.
 
+#### Blocking Checks — run before anything else
+
+Two defects make a prompt unexecutable no matter how well it is formatted. They are the same two
+reading checks as Mode 1's Analysis Steps 7-8, applied to a prompt instead of a CLAUDE.md:
+
+1. **Contradictions** — pair up any two instructions that cannot both be obeyed ("write the notes
+   to MIGRATION.md" vs "do not create any new files"). Report both quotes and say which to keep;
+   never report a contradiction without a resolution.
+2. **Vagueness** — instructions carrying no observable criterion ("reasonably fast", "the usual
+   edge cases", "production-ready", "where appropriate"). For each, propose the concrete criterion
+   that was probably meant.
+
+Everything below — structure, XML tags, tone — is cosmetics by comparison.
+
 #### Core Principles
 
 **1. Be Explicit** — say it directly, no ambiguity
@@ -153,12 +167,33 @@ Good: Compose smoothly flowing prose paragraphs.
 
 #### Checklist
 
+- [ ] No contradictions (blocking)
+- [ ] No unresolvable vagueness (blocking)
 - [ ] Explicit instructions (no ambiguity)
 - [ ] Context explains WHY
 - [ ] Positive framing (do X, not don't Y)
 - [ ] XML tags for structure
 - [ ] Examples match desired behavior
 - [ ] No redundant sections
+
+#### Report
+
+```
+Prompt Analysis
+===============
+
+Contradictions: {OK | FOUND: "{rule A}" vs "{rule B}" → keep {which}}
+Vagueness: {OK | FOUND: "{quote}" → suggest "{concrete criterion}"}
+Checklist: {OK | failures listed}
+Anti-patterns: {none | list triggered}
+
+Overall: {GOOD | NEEDS ATTENTION | BLOCKED}
+```
+
+`BLOCKED` whenever a contradiction or an unresolvable vagueness is found — such a prompt cannot be
+executed as written, whatever its formatting. A prompt whose only flaw is cosmetic is at worst
+`NEEDS ATTENTION`. A sound prompt is `GOOD`: say so and stop. Rewriting a prompt that already has
+explicit scope, paths and done-criteria manufactures work and wastes the user's attention.
 
 ## References
 

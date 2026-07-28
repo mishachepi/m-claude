@@ -8,7 +8,14 @@ allowed-tools: Read, Write, Edit, Bash(mkdir:*), Glob, AskUserQuestion
 
 # Docs Init
 
-Set up documentation structure in the current repository.
+Set up documentation structure in a repository — the current one, or the path given as input.
+
+Given a target path, run every command against it (`mkdir -p <dir>/docs`, `git -C <dir> …`) and
+resolve `CLAUDE.md`, `README.md`, `AGENT.md` and `docs/` under it, never under the invoking cwd.
+
+This skill scaffolds; it does not write content. `docs/` is left empty and the index table empty —
+the files come from `docs:update` or a human. Do not fill them with generic boilerplate to make the
+output look complete.
 
 ## What It Creates
 
@@ -86,6 +93,10 @@ Gives AI agents (Copilot, Cursor, etc.) an entry point → canonical `CLAUDE.md`
 If `README.md` exists and has no "Documentation" section, ask user:
 
 "Add Documentation section to README.md?" (Yes/No)
+
+Headless (`AskUserQuestion` unavailable — `claude -p`, spawned agents, CI): skip the section and
+report `README.md — skipped (headless, not asked)`. README is the project's front page; appending to
+it uninvited is the one edit here a human may not want, and skipping it costs nothing.
 
 If yes, add:
 

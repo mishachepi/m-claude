@@ -14,8 +14,12 @@ Multi-agent research system using orchestrator-worker pattern for comprehensive 
 ## Core Architecture
 
 **Orchestrator (You):** Plan research, spawn subagents, synthesize findings
-**Workers (search-subagent):** Parallel exploration of different aspects
-**Finalizer (citation-agent):** Add verified citations to report
+**Workers (`research:search-subagent`):** Parallel exploration of different aspects
+**Finalizer (`research:citation-agent`):** Add verified citations to report
+
+Agent types are registered under the plugin namespace, so every `Task`/`Agent` call must use the
+`research:` prefix — `search-subagent` alone fails with `Agent type not found`. The three that ship
+with this plugin: `research:research-agent`, `research:search-subagent`, `research:citation-agent`.
 
 ## When to Use Multi-Agent Research
 
@@ -53,13 +57,12 @@ Subagent 3: Research [aspect C] with emphasis on [constraints]
 
 ### Step 3: Spawn Subagents in Parallel
 
-Use Task tool with `research-agent` type or spawn `search-subagent` agents:
+Use the Task tool with `subagent_type: "research:search-subagent"` (or
+`research:research-agent` for a single broader sweep):
 
 ```
-Launch multiple search-subagent agents in parallel:
-- Each with distinct research aspect
-- All running simultaneously
-- Results collected when all complete
+Launch multiple research:search-subagent agents in parallel — one Task call per aspect,
+all in the same message so they run simultaneously; results are collected when all complete.
 ```
 
 ### Step 4: Synthesize Findings
@@ -70,9 +73,12 @@ Collect all subagent reports and:
 - Prioritize by relevance and authority
 - Structure into coherent narrative
 
+Carry each claim's source URL with the claim while merging. Collapsing several sources into one
+convenient URL is the failure mode this step produces — Step 5 catches it, but only after the fact.
+
 ### Step 5: Add Citations
 
-Spawn `citation-agent` to:
+Spawn `research:citation-agent` to:
 - Verify each claim has source
 - Add proper citations
 - Check source quality

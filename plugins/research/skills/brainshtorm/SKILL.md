@@ -3,7 +3,7 @@ name: brainshtorm
 description: Deep brainstorming and spec creation through structured interview. Use when user has an idea but needs to think it through, says "brainstorm", "let's think about", "spec out", or "help me plan".
 version: 1.0.0
 user-invocable: true
-allowed-tools: Read, Write, Edit, Glob, AskUserQuestion
+allowed-tools: Read, Write, Edit, AskUserQuestion
 ---
 
 # Brainstorm
@@ -136,49 +136,10 @@ After interview, compile:
 
 ## Step 4: Write Spec Document
 
-Create spec using template:
-
-```markdown
-# {IDEA_NAME} Spec
-
-## Overview
-{One paragraph summary}
-
-## Problem
-{Problem description from interview}
-
-## Solution
-{Solution description}
-
-## User Stories
-- As a {user}, I want to {action} so that {benefit}
-- ...
-
-## Technical Approach
-{Architecture decisions, tech stack, components}
-
-## Scope
-### v1 (MVP)
-- {feature 1}
-- {feature 2}
-
-### Future
-- {feature 3}
-- {feature 4}
-
-## Open Questions
-- {question 1}
-- {question 2}
-
-## Risks & Mitigations
-| Risk | Mitigation |
-|------|------------|
-| {risk} | {mitigation} |
-
-## Next Steps
-1. {step 1}
-2. {step 2}
-```
+Read `${CLAUDE_PLUGIN_ROOT}/skills/brainshtorm/TEMPLATE.md` and fill it in from the interview.
+That file is the template — do not improvise a structure or trim sections to what feels covered.
+Sections the interview did not reach stay in place, marked `{unknown — not covered in interview}`,
+so the gap is visible instead of silently absent.
 
 **Save location:** Ask user where to save, suggest:
 - `./SPEC.md` — current directory

@@ -17,7 +17,15 @@ The user may specify a source of changes:
 - `last-commit` — analyze `git diff HEAD~1..HEAD`
 - `commit <hash>` — analyze specific commit
 
-Default: staged changes, fall back to last commit if nothing staged.
+Default (empty input only): staged changes, falling back to the last commit if nothing is staged.
+
+Any other input — a path, a branch name, a sentence — is **not** a recognized source. Do not fall
+through to the default with it: say which forms are accepted and stop. Silently analyzing the last
+commit when the user named something else documents the wrong change and reports success.
+
+A target directory may accompany the source (e.g. `commit abc123 in /path/to/repo`). Run every git
+command against it with `git -C <dir>` and resolve every doc path under it — never against the cwd
+the skill happens to be invoked from.
 
 ## Flow
 
@@ -78,6 +86,11 @@ Apply all / select numbers / skip?
 
 Use AskUserQuestion for selection.
 
+**Headless (`AskUserQuestion` unavailable — `claude -p`, spawned agents, CI):** do not stall and do
+not skip the step. Apply every proposed update, and in the final report list them under
+`Applied without confirmation:`, naming each deletion of documentation separately. Git keeps the
+diff reviewable; a silent stall does not.
+
 ### 4. Apply Updates
 
 #### CLAUDE.md Docs Index
@@ -121,7 +134,7 @@ No changes needed:
 ## Notes
 
 - Show diff preview before applying changes
-- Preserve existing doc structure and style
+- Preserve existing doc structure and style — hand-written passages inside a generated doc survive
 - Only update sections affected by code changes
-- If unsure, ask the user
-- Never remove documentation without confirmation
+- If unsure, ask the user; headless, state the assumption in the report instead
+- Never remove documentation without confirmation — headless, list each removal in the report

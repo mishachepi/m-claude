@@ -13,9 +13,9 @@
 
 | Agent | Color | Description |
 |-------|-------|-------------|
-| `research-agent` | cyan | Information gathering (web, docs, codebase) |
-| `search-subagent` | cyan | Parallel exploration worker |
-| `citation-agent` | yellow | Verify and add citations to report |
+| `research:research-agent` | cyan | Information gathering (web, docs, codebase) |
+| `research:search-subagent` | cyan | Parallel exploration worker |
+| `research:citation-agent` | yellow | Verify and add citations to report |
 
 ## Flows
 

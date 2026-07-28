@@ -36,7 +36,7 @@ Subagent 3: Research Node.js libraries
 ## Step 3: Spawn Subagents
 
 ```
-Launch 3 search-subagent agents in parallel with above tasks.
+Launch 3 research:search-subagent agents in parallel with above tasks.
 Wait for all to complete.
 ```
 
@@ -49,7 +49,7 @@ Combine findings:
 
 ## Step 5: Add Citations
 
-Spawn citation-agent with:
+Spawn research:citation-agent with:
 - Research report draft
 - All sources from subagents
 

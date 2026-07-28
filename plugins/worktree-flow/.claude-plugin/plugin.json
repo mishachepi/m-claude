@@ -1,7 +1,7 @@
 {
   "name": "worktree-flow",
-  "version": "1.0.0",
-  "description": "Parallel Claude Code agents on native git worktrees — spawn, run, merge. No external binaries.",
+  "version": "2.0.0",
+  "description": "Parallel Claude Code agents on native git worktrees \u2014 spawn, run, merge. No external binaries.",
   "author": {
     "name": "mikhail_chepkin",
     "url": "https://github.com/mishachepi"

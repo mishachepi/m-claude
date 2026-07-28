@@ -99,6 +99,11 @@ The trade-offs are real:
 - skills that call `AskUserQuestion` (interviews, confirmations) dead-end
 - `exec bash` is required, otherwise the window closes and takes the output with it
 
+That trailing shell is the price of keeping the output: a finished headless window looks exactly
+like an idle `bash` prompt, and a screen full of them reads as "something broke". Collect the output
+(`tmux capture-pane -pt wt-<name>`, or `| tee /tmp/<name>.out` in the command) and then
+`tmux kill-window -t wt-<name>` — do not leave dead shells behind for the user to find.
+
 ## Merge (squash) + cleanup
 
 From the main worktree, once the agent committed:
