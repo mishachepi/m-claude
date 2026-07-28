@@ -24,9 +24,9 @@ Request → Playbook exists? → Execute
 | Plugin | Purpose |
 |--------|---------|
 | **core** | Self-learning workflow: init, learn, prompt-optimize |
-| **lead** | workmux setup and usage guide for parallel AI agent work |
 | **docs** | Documentation sync from code changes |
 | **research** | Multi-agent research + brainstorming |
+| **worktree-flow** | Parallel Claude Code agents on native git worktrees |
 
 ## Documentation
 
@@ -35,15 +35,15 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 | File | Triggers | Purpose |
 |------|----------|---------|
 | `docs/plugin-core.md` | core, init, learn, prompt-optimize | Core plugin components |
-| `docs/plugin-lead.md` | lead, workmux, worktree, parallel | workmux setup + skills guide |
 | `docs/plugin-docs.md` | docs, documentation, update docs | Docs plugin components |
 | `docs/plugin-research.md` | research, brainstorm, spec | Research plugin components |
+| `docs/plugin-worktree-flow.md` | worktree, parallel agents, merge, tmux | Worktree Flow plugin components |
 
 ## Prerequisites
 
 | Tool | Plugin | Install |
 |------|--------|---------|
 | plugin-dev | core | Claude Code marketplace |
-| workmux + skills | lead | `brew install raine/tap/workmux && workmux setup --skills` |
+| tmux | worktree-flow | `brew install tmux` |
 
 Don't forget to update README.md after changes.

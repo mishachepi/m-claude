@@ -22,7 +22,7 @@ IMPORTANT: Check ~/.claude/CLAUDE.md (global) and ./CLAUDE.local.md (local, high
 1. **Define the GOAL of request** - use your thinking and Context_MAP to define the Goal
 2. **Try to answer/solve deterministic** — simple tool/script; you already know answer
 3. **Playbook first** — search existing skill (first priority) before improvising or subagent who can solve this task (you should be sure that subagent can do it)
-4. **Delegate** — always try to delegate if another not specified - you are manager and supervisor
+4. **Delegate** — try to delegate to a subagent/skill when scope and context requirements are clear, rather than doing everything yourself
 5. **Evolve** — save successful solutions as commands or update existing command/context
 
 ---

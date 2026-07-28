@@ -7,9 +7,9 @@
 | Plugin | Purpose |
 |--------|---------|
 | [core](./plugins/core/) | Self-learning workflow — init, learn, prompt-optimize |
-| [lead](./plugins/lead/) | workmux setup and usage guide for parallel AI agent work |
 | [docs](./plugins/docs/) | Keep documentation in sync with code changes |
 | [research](./plugins/research/) | Multi-agent research and brainstorming |
+| [worktree-flow](./plugins/worktree-flow/) | Parallel Claude Code agents on native git worktrees |
 
 ## Core Beliefs
 
@@ -32,8 +32,7 @@ Request → Playbook exists? → Execute
 |------|------------|---------|
 | Claude Code | all | https://claude.ai/code |
 | plugin-dev | core | Claude Code marketplace |
-| workmux | lead | `brew install raine/tap/workmux && workmux setup --skills` |
-| tmux | lead | `brew install tmux` |
+| tmux | worktree-flow | `brew install tmux` |
 
 ## Quick Start
 
@@ -43,9 +42,9 @@ claude mcp add-from-marketplace m-claude-plugins
 
 # Or install individual plugins
 claude plugin add ./plugins/core
-claude plugin add ./plugins/lead
 claude plugin add ./plugins/docs
 claude plugin add ./plugins/research
+claude plugin add ./plugins/worktree-flow
 
 # Initialize in your project
 /init local
@@ -57,14 +56,14 @@ claude plugin add ./plugins/research
 m-claude/
 ├── plugins/
 │   ├── core/          # Commands, agents, skills for self-learning
-│   ├── lead/          # workmux setup and parallel agent orchestration
 │   ├── docs/          # Documentation sync from code changes
-│   └── research/      # Multi-agent research + brainstorming
+│   ├── research/      # Multi-agent research + brainstorming
+│   └── worktree-flow/ # Parallel agents on native git worktrees
 ├── docs/              # Framework documentation
 │   ├── plugin-core.md
-│   ├── plugin-lead.md
 │   ├── plugin-docs.md
-│   └── plugin-research.md
+│   ├── plugin-research.md
+│   └── plugin-worktree-flow.md
 └── CLAUDE.md          # Project instructions
 ```
 

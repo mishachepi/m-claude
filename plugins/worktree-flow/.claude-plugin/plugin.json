@@ -1,17 +1,15 @@
 {
-  "name": "lead",
+  "name": "worktree-flow",
   "version": "1.0.0",
-  "description": "workmux setup and usage guide — parallel AI agent orchestration with git worktrees",
+  "description": "Parallel Claude Code agents on native git worktrees — spawn, run, merge. No external binaries.",
   "author": {
     "name": "mikhail_chepkin",
     "url": "https://github.com/mishachepi"
   },
   "repository": "https://github.com/mishachepi/m-claude",
   "keywords": [
-    "workmux",
     "worktree",
     "parallel-agents",
-    "coordinator",
-    "setup"
+    "git"
   ]
 }

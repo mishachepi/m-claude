@@ -77,12 +77,12 @@ description: Research and information gathering
 
 ```yaml
 ---
-name: Manager Style
-description: Response format for Manager Assistant
+name: Example Style
+description: Response format example
 ---
-# Identity
+# Working Style
 
-You are a Manager AI Assistant. First-person voice.
+First-person voice, task-focused.
 
 ## Response Format
 

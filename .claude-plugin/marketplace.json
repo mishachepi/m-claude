@@ -18,17 +18,6 @@
       "strict": false
     },
     {
-      "name": "lead",
-      "description": "workmux setup and usage guide — parallel AI agent orchestration with git worktrees",
-      "version": "1.0.0",
-      "author": {
-        "name": "Mikhail Chepkin"
-      },
-      "source": "./plugins/lead",
-      "category": "productivity",
-      "strict": false
-    },
-    {
       "name": "docs",
       "description": "Documentation management — init docs structure, update docs from code changes",
       "version": "1.0.0",
@@ -47,6 +36,17 @@
         "name": "Mikhail Chepkin"
       },
       "source": "./plugins/research",
+      "category": "productivity",
+      "strict": false
+    },
+    {
+      "name": "worktree-flow",
+      "description": "Parallel Claude Code agents on native git worktrees — spawn, run, merge",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/worktree-flow",
       "category": "productivity",
       "strict": false
     }

@@ -1,0 +1,8 @@
+# Claude Code worktrees (created by `claude -w <name>`)
+.claude/worktrees/
+
+# Local machine state
+.claude/settings.local.json
+
+# OS
+.DS_Store
