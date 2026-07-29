@@ -68,7 +68,8 @@ m-claude/
 │   ├── plugin-docs.md
 │   ├── plugin-research.md
 │   ├── plugin-worktree-flow.md
-│   └── plugin-tg-report.md
+│   ├── plugin-tg-report.md
+│   └── handover-tg-report-ru.md   # merge acceptance record, owner-facing (Russian)
 └── CLAUDE.md          # Project instructions
 ```
 
