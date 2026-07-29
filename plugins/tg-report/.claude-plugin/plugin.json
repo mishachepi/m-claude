@@ -1,0 +1,16 @@
+{
+  "name": "tg-report",
+  "version": "0.1.0",
+  "description": "Agents report to Telegram — a short summary on task completion, the full answer on request.",
+  "author": {
+    "name": "mikhail_chepkin",
+    "url": "https://github.com/mishachepi"
+  },
+  "repository": "https://github.com/mishachepi/m-claude",
+  "keywords": [
+    "telegram",
+    "reporting",
+    "hooks",
+    "agents"
+  ]
+}
