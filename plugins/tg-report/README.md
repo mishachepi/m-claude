@@ -2,6 +2,11 @@
 
 > Agents report to Telegram when they finish a turn — a short summary always, the full answer attached only when it carries more.
 
+📖 **Owner-facing detailed guide, in Russian: [`README.ru.md`](./README.ru.md)** — how it works,
+every setting, the safety invariants and the defect behind each, the interim attachment debt, and
+a verification checklist. This file is the short component reference; `docs/DESIGN.md` holds the
+decision record.
+
 ## Components
 
 | Type | Name | Purpose |
