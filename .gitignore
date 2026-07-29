@@ -9,3 +9,8 @@
 
 # Smoke-test reports from spawned agents (evidence, not product)
 smoke/
+
+# Python bytecode / test caches
+__pycache__/
+*.pyc
+.pytest_cache/
