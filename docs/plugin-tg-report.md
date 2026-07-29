@@ -36,6 +36,12 @@
 All of it lives inside `tg_deliver.py` so that the SC1 backend flip to
 `scion message --channel telegram` touches exactly one function.
 
+The attachment row is **interim debt**, not architecture: the mesh lever is text-only, so
+documents go direct even on a mesh host. It is confined to `_deliver_document()` by a test and
+retires with the SC1 sunset flip. That flip has a trap — `scion message --attach` silently drops
+absolute paths outside `/workspace` and `/scion-volumes`, and the answer store is outside both.
+See `plugins/tg-report/docs/DESIGN.md`.
+
 ## Invariants
 
 - **Outbound only.** No `getUpdates`, no webhook — enforced by `tests/test_no_inbound.py`,
