@@ -26,13 +26,14 @@ def captured(monkeypatch):
     """Capture what would have been POSTed."""
     calls: list[dict] = []
 
-    def fake_post(url, data, content_type, timeout):
+    def fake_post(url, data, content_type, timeout, secret=None):
         calls.append(
             {
                 "url": url,
                 "data": data,
                 "content_type": content_type,
                 "timeout": timeout,
+                "secret": secret,
             }
         )
         return {"ok": True, "result": {"message_id": 1}}
@@ -213,3 +214,54 @@ def test_main_exit_1_on_send_failure(monkeypatch):
 
     monkeypatch.setattr(tg_send, "_post", fake_post)
     assert tg_send.main(["--text", "hi"]) == 1
+
+
+# ------------------------------------------------------------ secret hygiene
+
+
+def test_scrub_removes_the_token():
+    leaked = "unknown url type: 'https://api.telegram.org/bot123:SECRET/sendMessage'"
+    assert "123:SECRET" not in tg_send.scrub(leaked, "123:SECRET")
+    assert "***" in tg_send.scrub(leaked, "123:SECRET")
+
+
+def test_scrub_is_a_noop_without_a_secret():
+    assert tg_send.scrub("plain", None) == "plain"
+
+
+def test_malformed_token_does_not_leak_into_the_error(monkeypatch):
+    """urlopen quotes the whole URL back on a bad scheme — the URL holds the token."""
+    token = "not a url-safe token"
+
+    def raise_value_error(*_a, **_k):
+        raise ValueError(
+            f"unknown url type: '{tg_send.API_ROOT}/bot{token}/sendMessage'"
+        )
+
+    monkeypatch.setattr(tg_send.urllib.request, "urlopen", raise_value_error)
+
+    with pytest.raises(tg_send.SendError) as exc:
+        tg_send.send_message("hi", token=token, chat_id="42")
+
+    assert token not in str(exc.value), "bot token leaked into the error message"
+    assert "***" in str(exc.value)
+
+
+def test_api_error_payload_is_scrubbed(monkeypatch):
+    token = "123:SECRET"
+
+    class Resp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_a):
+            return False
+
+        def read(self):
+            return json.dumps({"ok": False, "description": f"bad token {token}"}).encode()
+
+    monkeypatch.setattr(tg_send.urllib.request, "urlopen", lambda *a, **k: Resp())
+
+    with pytest.raises(tg_send.SendError) as exc:
+        tg_send.send_message("hi", token=token, chat_id="42")
+    assert token not in str(exc.value)

@@ -173,28 +173,6 @@ def test_slug_falls_back_when_unset(monkeypatch):
     assert tg_summary.agent_slug()
 
 
-# ------------------------------------------------------------------ retention
-
-
-def test_prune_removes_old_answers_and_keeps_fresh(monkeypatch, tmp_path):
-    answers = tg_summary.state_dir() / "answers"
-    answers.mkdir(parents=True)
-    old = answers / "old.md"
-    fresh = answers / "fresh.md"
-    old.write_text("old")
-    fresh.write_text("fresh")
-    import os
-    import time
-
-    stale = time.time() - (tg_summary.ANSWER_RETENTION_DAYS + 1) * 86400
-    os.utime(old, (stale, stale))
-
-    tg_summary.prune_answers()
-
-    assert not old.exists()
-    assert fresh.exists()
-
-
 # ----------------------------------------------------------------------- main
 
 

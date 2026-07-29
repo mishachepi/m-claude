@@ -90,11 +90,12 @@ def test_direct_used_only_without_lever(no_lever, direct, monkeypatch):
 def test_direct_reuses_the_mesh_bot_credentials(no_lever, direct, monkeypatch):
     """No second bot: the fallback rides the same token the mesh already uses."""
     monkeypatch.setenv("LOG_BOT_TOKEN", "MESH-TOKEN")
-    monkeypatch.setenv("TELEGRAM_USER_ID", "823945630")
+    monkeypatch.setenv("TELEGRAM_USER_ID", "1000000001")
     messages, _ = direct
 
     tg_deliver.deliver("done")
     assert messages[0]["token"] == "MESH-TOKEN"
+    assert messages[0]["chat_id"] == "1000000001"
 
 
 def test_direct_without_any_credentials_raises(no_lever, direct):
