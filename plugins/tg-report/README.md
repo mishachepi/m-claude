@@ -82,6 +82,22 @@ Fallback credentials, used only when the lever is absent: `TG_REPORT_BOT_TOKEN` 
 `~/.config/tg-report/config.json` (`{"bot_token": …, "chat_id": …}`, mode `0600`).
 **No secret belongs in this repository**, and no code path here writes one.
 
+## Safety properties
+
+**The store never deletes what it did not write.** `TG_REPORT_STATE_DIR` is operator input, so
+pruning requires *both* that the file name matches a stored answer (`<6 hex>.md`) *and* that the
+directory carries this plugin's marker file. Point the variable at a notes folder and the plugin
+refuses to prune rather than eating the notes. Answers are written `0600` in a `0700` directory —
+a stored answer is a verbatim transcript of whatever the agent was working on.
+
+**Delivery cannot outlast the hook.** The Stop hook runs inside the agent's turn, so the
+delivery budget (`TEXT_TIMEOUT + DOCUMENT_TIMEOUT` in `tg_deliver.py`) is asserted to fit inside
+the `timeout` declared in `hooks.json`, with margin for interpreter start-up. Otherwise a slow
+Telegram would stall every turn and then be killed mid-send.
+
+**Errors never carry the token.** The bot token lives in the request URL, and some `urllib`
+failures quote that URL back; every error string is scrubbed before it can reach stderr.
+
 ## Not in this plugin's lane
 
 - **Who reports, how often, quiet hours** — tiering is `flow`'s engine (SC1 put threshold and

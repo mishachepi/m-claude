@@ -33,6 +33,19 @@ import tg_send  # noqa: E402
 
 LEVER = "log-bot-notify"
 
+# ---------------------------------------------------------------------------
+# Timeout budget.
+#
+# The Stop hook runs inside the agent's turn: every second spent here is a second
+# the session hangs. hooks.json grants the hook 30s, and delivery must fit inside
+# that with room for interpreter start-up — otherwise a slow Telegram stalls every
+# turn and then gets killed mid-send. The invariant "delivery budget < hook budget"
+# is enforced by tests/test_timeout_budget.py, not by these comments agreeing.
+# ---------------------------------------------------------------------------
+TEXT_TIMEOUT = 8.0
+DOCUMENT_TIMEOUT = 15.0
+TOTAL_BUDGET = TEXT_TIMEOUT + DOCUMENT_TIMEOUT
+
 Backend = Literal["lever", "direct", "none"]
 
 
@@ -48,9 +61,12 @@ def lever_path() -> str | None:
 
 
 def _send_via_lever(text: str, lever: str, timeout: float) -> None:
-    proc = subprocess.run(
-        [lever, text], capture_output=True, timeout=timeout, text=True
-    )
+    try:
+        proc = subprocess.run(
+            [lever, text], capture_output=True, timeout=timeout, text=True
+        )
+    except subprocess.TimeoutExpired as exc:
+        raise DeliveryError(f"{LEVER} exceeded {timeout}s") from exc
     if proc.returncode != 0:
         raise DeliveryError(
             f"{LEVER} exited {proc.returncode}: {proc.stderr.strip()[:200]}"
@@ -76,7 +92,6 @@ def deliver(
     *,
     document: Path | None = None,
     caption: str | None = None,
-    timeout: float = 20.0,
 ) -> Backend:
     """Deliver `text`, optionally followed by `document`. Returns the backend used.
 
@@ -90,20 +105,20 @@ def deliver(
 
     lever = lever_path()
     if lever:
-        _send_via_lever(text, lever, timeout)
+        _send_via_lever(text, lever, TEXT_TIMEOUT)
         backend: Backend = "lever"
     else:
         token, chat_id = _resolve_direct_config()
-        tg_send.send_message(text, token=token, chat_id=chat_id, timeout=timeout)
+        tg_send.send_message(text, token=token, chat_id=chat_id, timeout=TEXT_TIMEOUT)
         backend = "direct"
 
     if document is not None:
-        _deliver_document(document, caption or "", timeout)
+        _deliver_document(document, caption or "")
 
     return backend
 
 
-def _deliver_document(document: Path, caption: str, timeout: float) -> None:
+def _deliver_document(document: Path, caption: str) -> None:
     """Attachments have no lever — `log-bot-notify` sends text only.
 
     So this one path talks to the Bot API directly even on a mesh host. It stays
@@ -124,7 +139,7 @@ def _deliver_document(document: Path, caption: str, timeout: float) -> None:
             token=token,
             chat_id=chat_id,
             caption=caption,
-            timeout=max(timeout, 60.0),
+            timeout=DOCUMENT_TIMEOUT,
         )
     except tg_send.SendError:
         return

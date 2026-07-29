@@ -118,7 +118,21 @@ def truncate(text: str, limit: int = TEXT_LIMIT) -> str:
     return text[: limit - len(TRUNCATION_MARK)] + TRUNCATION_MARK
 
 
-def _post(url: str, data: bytes, content_type: str, timeout: float) -> dict[str, Any]:
+def scrub(message: str, secret: str | None) -> str:
+    """Remove the bot token from anything that may be printed or logged.
+
+    The token sits in the request URL, and several urllib failures quote that URL
+    back in their message (`ValueError: unknown url type: …`). Without this, a
+    malformed token turns a hook's stderr line into a credential leak.
+    """
+    if not secret:
+        return message
+    return message.replace(secret, "***")
+
+
+def _post(
+    url: str, data: bytes, content_type: str, timeout: float, secret: str | None = None
+) -> dict[str, Any]:
     req = urllib.request.Request(
         url, data=data, headers={"Content-Type": content_type}, method="POST"
     )
@@ -127,12 +141,13 @@ def _post(url: str, data: bytes, content_type: str, timeout: float) -> dict[str,
             payload = json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
         body = exc.read().decode("utf-8", "replace")
-        raise SendError(f"HTTP {exc.code}: {body}") from exc
-    except (urllib.error.URLError, OSError, json.JSONDecodeError) as exc:
-        raise SendError(f"transport failure: {exc}") from exc
+        raise SendError(scrub(f"HTTP {exc.code}: {body}", secret)) from exc
+    except (urllib.error.URLError, OSError, json.JSONDecodeError, ValueError) as exc:
+        # ValueError covers urlopen rejecting a malformed URL built from a bad token.
+        raise SendError(scrub(f"transport failure: {exc}", secret)) from exc
 
     if not payload.get("ok"):
-        raise SendError(f"Bot API error: {payload}")
+        raise SendError(scrub(f"Bot API error: {payload}", secret))
     return payload
 
 
@@ -189,6 +204,7 @@ def send_message(
         json.dumps(payload).encode("utf-8"),
         "application/json",
         timeout,
+        secret=token,
     )
 
 
@@ -207,7 +223,7 @@ def send_document(
 
     body, content_type = _multipart(fields, "document", file_path)
     return _post(
-        f"{API_ROOT}/bot{token}/sendDocument", body, content_type, timeout
+        f"{API_ROOT}/bot{token}/sendDocument", body, content_type, timeout, secret=token
     )
 
 

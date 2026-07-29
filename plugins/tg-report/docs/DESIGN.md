@@ -240,6 +240,28 @@ otherwise pure markdown. Conventions taken from repo history rather than invente
 Python, `#!/usr/bin/env python3`, `python3 ${CLAUDE_PLUGIN_ROOT}/…` invocation, the
 `hooks/hooks.json` schema.
 
+## Defects found in review and fixed (2026-07-29)
+
+Found by `epic-mclaude` during merge review — by reading the code, not the test names, which is
+why they were found at all. All three classes are now enforced by tests rather than avoided by
+care:
+
+1. **Timeout budget did not close.** `hooks.json` allowed the hook 30s while delivery could
+   spend 20s on the summary plus a hard-coded `max(timeout, 60)` on the attachment — 80s worst
+   case. The symptom would not have been a crash but a per-turn stall ending in the hook being
+   killed mid-send, on every agent it was rolled out to. Now `TEXT_TIMEOUT + DOCUMENT_TIMEOUT`
+   is a single declared budget, asserted against `hooks.json` with start-up margin.
+2. **`TG_REPORT_STATE_DIR` was unvalidated** while prune removed every `*.md` older than the
+   retention window beneath it. One wrong export at a notes folder was silent data loss. Prune
+   now requires both a matching answer filename and this plugin's marker in the directory; a
+   directory we did not create is never touched.
+3. **The bot token could reach stderr.** `urlopen` raises `ValueError` on a malformed URL and
+   quotes the URL — which contains the token — and that exception escaped the `except` clause
+   into the hook's stderr. Now caught, and every error string is scrubbed.
+
+Also fixed from the same review: answers written `0600` in a `0700` directory rather than at the
+default umask, and a real-looking Telegram user id replaced with an obvious fake in tests.
+
 ## Growth path (not MVP)
 
 - More bot commands: agent status, day digest, task launch — all of which hit the same inbound

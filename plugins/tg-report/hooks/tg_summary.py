@@ -41,6 +41,14 @@ ATTACH_THRESHOLD = int(os.environ.get("TG_REPORT_ATTACH_THRESHOLD", "1500"))
 
 ANSWER_RETENTION_DAYS = int(os.environ.get("TG_REPORT_RETENTION_DAYS", "14"))
 
+# Answers are named <6 hex>.md and nothing else is ever removed. `TG_REPORT_STATE_DIR`
+# is operator input: point it at a notes folder by mistake and a naive "delete *.md
+# older than N days" would quietly eat someone's writing. Two guards, both required:
+# the filename must match a stored answer, and the directory must carry the marker
+# this plugin writes. A directory we did not create is never pruned.
+ANSWER_NAME = re.compile(r"^[0-9a-f]{6}\.md$")
+STORE_MARKER = ".tg-report-store"
+
 
 def state_dir() -> Path:
     override = os.environ.get("TG_REPORT_STATE_DIR")
@@ -108,22 +116,51 @@ def extract_summary(text: str) -> str:
     return summary
 
 
-def store_answer(text: str, slug: str) -> tuple[str, Path]:
-    """Persist the full answer under a short id; returns (id, path)."""
+def answers_dir() -> Path:
+    """The answer store, created private and marked as ours."""
     answers = state_dir() / "answers"
     answers.mkdir(parents=True, exist_ok=True)
+    try:
+        answers.chmod(0o700)
+        marker = answers / STORE_MARKER
+        if not marker.exists():
+            marker.write_text("tg-report answer store\n")
+    except OSError:
+        pass
+    return answers
+
+
+def store_answer(text: str, slug: str) -> tuple[str, Path]:
+    """Persist the full answer under a short id; returns (id, path).
+
+    Written 0600: this is a verbatim assistant answer, which routinely contains
+    whatever the agent was working on.
+    """
+    answers = answers_dir()
     answer_id = uuid.uuid4().hex[:6]
     path = answers / f"{answer_id}.md"
     path.write_text(f"# {slug} — {time.strftime('%Y-%m-%d %H:%M')}\n\n{text}\n")
+    try:
+        path.chmod(0o600)
+    except OSError:
+        pass
     return answer_id, path
 
 
 def prune_answers() -> None:
+    """Delete expired answers — and only answers this plugin itself wrote."""
     answers = state_dir() / "answers"
     if not answers.is_dir() or ANSWER_RETENTION_DAYS <= 0:
         return
+    if not (answers / STORE_MARKER).exists():
+        # Not our store. Someone pointed TG_REPORT_STATE_DIR at a foreign directory;
+        # refusing beats deleting their files.
+        return
+
     cutoff = time.time() - ANSWER_RETENTION_DAYS * 86400
-    for item in answers.glob("*.md"):
+    for item in answers.iterdir():
+        if not item.is_file() or not ANSWER_NAME.match(item.name):
+            continue
         try:
             if item.stat().st_mtime < cutoff:
                 item.unlink()
