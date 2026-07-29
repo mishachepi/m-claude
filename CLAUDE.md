@@ -40,6 +40,7 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 | `docs/plugin-research.md` | research, brainstorm, spec | Research plugin components |
 | `docs/plugin-worktree-flow.md` | worktree, parallel agents, merge, tmux | Worktree Flow plugin components |
 | `docs/plugin-tg-report.md` | telegram, report, stop hook, notify | TG Report plugin components |
+| `docs/handover-tg-report-ru.md` | handover, acceptance, push decision | Merge acceptance record for tg-report — repo state, review findings, pending push (Russian) |
 
 ## Prerequisites
 
