@@ -1,0 +1,16 @@
+{
+  "description": "tg-report — send a short Telegram summary when an agent finishes a turn",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/tg_summary.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
