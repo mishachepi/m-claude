@@ -7,8 +7,12 @@ Telegram chat via the Bot API. No hook logic, no formatting policy, no state.
 Usage:
     tg_send.py --text "hello"
     echo "hello" | tg_send.py
-    tg_send.py --text "see log" --file /tmp/run.log
     tg_send.py --text "quiet ping" --silent
+
+`send_document()` is a library primitive with exactly one caller —
+`tg_deliver._deliver_document()`. It is deliberately NOT exposed on this CLI: the
+attachment path is interim debt owed to the SC1 sunset flip, and it is worth
+keeping to a single site (enforced by tests/test_no_inbound.py).
 
 Config resolution (first hit wins), see docs/DESIGN.md:
     1. CLI flags        --token / --chat-id
@@ -217,7 +221,6 @@ def build_parser() -> argparse.ArgumentParser:
         prog="tg-send", description="Send text (and optionally a file) to Telegram."
     )
     parser.add_argument("--text", help="message text; read from stdin when omitted")
-    parser.add_argument("--file", type=Path, help="attach this file as a document")
     parser.add_argument("--chat-id", help="override the configured chat id")
     parser.add_argument("--token", help="override the configured bot token")
     parser.add_argument(
@@ -242,7 +245,7 @@ def main(argv: list[str] | None = None) -> int:
         text = sys.stdin.read()
     text = (text or "").strip()
 
-    if not text and not args.file:
+    if not text:
         print("tg-send: nothing to send", file=sys.stderr)
         return 3
 
@@ -253,24 +256,14 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     try:
-        if args.file:
-            send_document(
-                args.file,
-                token=token,
-                chat_id=chat_id,
-                caption=text,
-                silent=args.silent,
-                timeout=max(args.timeout, 60.0),
-            )
-        else:
-            send_message(
-                text,
-                token=token,
-                chat_id=chat_id,
-                parse_mode=args.parse_mode,
-                silent=args.silent,
-                timeout=args.timeout,
-            )
+        send_message(
+            text,
+            token=token,
+            chat_id=chat_id,
+            parse_mode=args.parse_mode,
+            silent=args.silent,
+            timeout=args.timeout,
+        )
     except SendError as exc:
         print(f"tg-send: {exc}", file=sys.stderr)
         return 1

@@ -112,17 +112,38 @@ nothing needs one.
 **E. Fleet rollout is not this plugin's lane.** Who reports, how often, quiet hours = tiering,
 `flow`'s engine per SC1. Distribution = `orchestrator`. MVP ships one pilot agent on M1.
 
-### Known deviation from the ruling — attachments have no lever
+### ⚠️ Interim debt — the attachment path (ratified by Area 2026-07-29, not architecture)
+
+**This is a debt with a scheduled payoff, not a design decision.** Read it as temporary.
 
 The ruling says that on a mesh host the plugin talks to the Bot API "not at all". That is
 achievable for text but **not** for documents: `log-bot-notify` sends text only
-(`notify.send(text: str) -> dict`), so there is no lever to carry `sendDocument`.
+(`notify.send(text: str) -> dict`, endpoint hard-wired to `sendMessage`), so no lever carries
+`sendDocument`.
 
-Resolution taken: the attachment path calls the Bot API directly **even on a mesh host**, but
-strictly inside `tg_deliver._deliver_document()` — i.e. inside the very isolation the ruling
-exists to create, on the same token, still outbound-only. Nothing else about the ruling bends.
-Flagged to `area-system-architect` for ratification rather than assumed; if it is rejected, the
-alternatives are to drop attachments or to ask `epic-log-bot` for a document mode on the lever.
+Interim resolution, ratified with conditions: the attachment path calls the Bot API directly
+even on a mesh host, but strictly inside `tg_deliver._deliver_document()` — inside the very
+isolation the ruling exists to create, same token, still outbound-only.
+
+Ratification conditions, all binding:
+
+1. **The path never spreads beyond `_deliver_document()`.** Enforced by
+   `tests/test_no_inbound.py::test_attachment_path_does_not_spread`, not by prose.
+2. **It is recorded as interim debt**, here and in the README, tied to the SC1 sunset.
+3. **It flips together with the text path**, tracked in the SC1 sunset inventory.
+
+Asking `epic-log-bot` to add a document mode to the lever was explicitly rejected: SC1 carries a
+cross-repo tripwire against extending log-bot beyond need, and the target backend already has
+it — `scion message --attach`.
+
+#### Gotcha for whoever performs the flip
+
+`scion message --attach`, per its own help, takes paths **under `/workspace` or
+`/scion-volumes`**; *"absolute paths outside these roots are silently dropped on delivery"*.
+The answer store lives in `$XDG_STATE_HOME/tg-report/answers/`, outside both roots. A naive
+flip therefore yields **"sent successfully, no file"** — silent loss, the worst defect class,
+and trivially easy to hit here. The flip must either relocate the store under an accepted root
+or copy the answer there before attaching.
 
 Attachment failures are swallowed by design: a summary that arrives without its file is a
 degraded report, one that never arrives is a lost one.
@@ -135,9 +156,14 @@ anywhere `python3` runs, which matters for a hook that fires on every turn on an
 ```bash
 tg_send.py --text "hello"
 echo "hello" | tg_send.py
-tg_send.py --text "see log" --file /tmp/run.log      # sendDocument, text becomes the caption
 tg_send.py --text "quiet" --silent                   # disable_notification
 ```
+
+`send_document()` exists as a library primitive but is deliberately **not** on this CLI: the
+attachment path is interim debt, and keeping it to a single call site is a ratification
+condition (below). Removing the `--file` flag was how that condition was actually met — the
+containment test failed on the flag before it was dropped, which is the evidence that the test
+is real.
 
 Decisions:
 

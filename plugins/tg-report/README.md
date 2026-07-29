@@ -38,6 +38,19 @@ agent finishes turn
 - **`page` is not used.** `page` is the CRITICAL tier with a mesh-contract threshold; routine
   task-completion reports through it would be exactly the page inflation `flow` has to suppress.
 
+### Interim debt: the attachment path
+
+**Temporary, not architecture.** The mesh lever sends text only (`notify.send(text)`), so
+document attachments go direct to the Bot API even on a mesh host — contained inside
+`tg_deliver._deliver_document()`, on the same token, still outbound-only, and kept there by
+`tests/test_no_inbound.py::test_attachment_path_does_not_spread`. It retires with the SC1
+sunset flip, together with the text path.
+
+**When flipping:** `scion message --attach` accepts paths under `/workspace` or
+`/scion-volumes` and **silently drops absolute paths outside those roots**. The answer store
+lives outside both, so a naive flip yields "sent successfully, no file". Relocate the store or
+stage a copy first. Details in `docs/DESIGN.md`.
+
 ### Outbound-only, forever
 
 The plugin contains no `getUpdates` and no webhook code, and `tests/test_no_inbound.py` enforces

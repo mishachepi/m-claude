@@ -88,6 +88,51 @@ def test_docstring_prose_is_not_flagged():
     assert not any("getUpdates" in v for v in values)
 
 
+def call_sites(tree: ast.AST, callee: str) -> list[str | None]:
+    """Names of the functions that call `callee` (None = module level)."""
+    sites: list[str | None] = []
+
+    class Visitor(ast.NodeVisitor):
+        def __init__(self) -> None:
+            self.stack: list[str] = []
+
+        def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
+            self.stack.append(node.name)
+            self.generic_visit(node)
+            self.stack.pop()
+
+        def visit_Call(self, node: ast.Call) -> None:
+            func = node.func
+            name = func.attr if isinstance(func, ast.Attribute) else getattr(func, "id", None)
+            if name == callee:
+                sites.append(self.stack[-1] if self.stack else None)
+            self.generic_visit(node)
+
+    Visitor().visit(tree)
+    return sites
+
+
+def test_attachment_path_does_not_spread():
+    """Ratification condition (Area, 2026-07-29): exactly one place sends a document.
+
+    The interim direct-Bot-API attachment path is only acceptable while it stays
+    inside `_deliver_document()`, so that SC1's sunset flip has a single site to
+    change. This test is what keeps that true.
+    """
+    offenders: list[str] = []
+    for source in python_sources():
+        tree = ast.parse(source.read_text(), filename=str(source))
+        for enclosing in call_sites(tree, "send_document"):
+            if source.name != "tg_deliver.py" or enclosing != "_deliver_document":
+                offenders.append(f"{source.name}:{enclosing}")
+    assert not offenders, "send_document called outside _deliver_document: " + ", ".join(offenders)
+
+
+def test_the_call_site_check_would_catch_a_leak():
+    tree = ast.parse("def somewhere_else():\n    tg_send.send_document(p, token=t)\n")
+    assert call_sites(tree, "send_document") == ["somewhere_else"]
+
+
 def test_hooks_json_registers_only_stop():
     hooks = json.loads((PLUGIN_ROOT / "hooks" / "hooks.json").read_text())
     assert list(hooks["hooks"]) == ["Stop"]
