@@ -49,6 +49,17 @@
       "source": "./plugins/worktree-flow",
       "category": "productivity",
       "strict": false
+    },
+    {
+      "name": "tg-report",
+      "description": "Agents report to Telegram — a short summary on task completion, the full answer attached when it carries more",
+      "version": "0.1.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/tg-report",
+      "category": "productivity",
+      "strict": false
     }
   ]
 }

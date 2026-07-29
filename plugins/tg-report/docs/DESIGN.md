@@ -1,9 +1,9 @@
 # tg-report — design
 
-> Status: **transport built and tested, architecture blocked on an Area ruling.**
-> Recon (2026-07-29) found that the LSA mesh already has a ratified Telegram
-> architecture that this plugin must fit into rather than parallel. See
-> §"What recon changed" — it is the most important section in this document.
+> Status: **MVP built, pilot smoke green on M1.** Recon (2026-07-29) found that the
+> LSA mesh already has a ratified Telegram architecture this plugin must fit into
+> rather than parallel; the Area ruled on it the same day. See §"What recon changed"
+> and §"Architecture" — the ruling is what this code implements.
 
 ## Problem
 
@@ -76,35 +76,56 @@ of scope, assigned to `flow`. `page` is CRITICAL-tier only — its own help says
 in the flow-brief. A routine, per-task-completion tier has **no owner and no implementation
 today**. That gap is the real justification for this plugin.
 
-## Proposed architecture after recon (needs an Area ruling — not implemented)
+## Architecture (ruled by `area-system-architect`, 2026-07-29 — implemented)
 
-**A. Delivery: dispatch, don't duplicate.**
-Mirror `page`'s `_dispatch()` pattern — a stable local interface over a swappable backend:
+**A. Delivery: dispatch, don't duplicate.** `scripts/tg_deliver.py` mirrors `page`'s
+`_dispatch()` — a stable local interface over a swappable backend:
 
-1. `log-bot-notify` when present (inside the LSA mesh: same bot, same token, one-bot invariant
-   held, zero risk to capture — `sendMessage` has no exclusivity);
-2. direct Bot API via `tg_send.py` only as the **portable** fallback, for hosts where the
-   vault-tools package does not exist.
+1. `log-bot-notify` whenever it is on `PATH` (inside the mesh: same bot, same token, one-bot
+   invariant held, zero risk to capture — `sendMessage` has no exclusivity);
+2. direct Bot API via `tg_send.py` **only** when the lever is absent (non-LSA host), on the
+   same credentials.
 
-This keeps the built transport honest: m-claude plugins install anywhere, `log-bot` is
-LSA-specific. But inside the mesh the mesh's lever wins.
+The Area's decisive argument was not 409 risk — there is none for `sendMessage` — but **sunset
+survival**: SC1 owes a backend flip to native `scion message --channel telegram`, and only code
+whose transport sits behind one function survives it. The boundary is "will this outlive
+go-live", not "whose script is it".
 
-**B. Retrieval: drop the second poller entirely.**
-Instead of `/full <id>` over a new `getUpdates` loop — **send the full answer as a document**
-alongside the summary when it exceeds the message limit. `sendDocument` is outbound-only,
-needs no inbound route, no second bot, and no ruling from SC1. The user gets the summary as a
-notification and the full text attached, one tap away.
+**B. Retrieval: no second poller, ever.** `/full <id>` needs both an inbound consumer *and*
+id↔answer correlation — SC1 ratified the opposite on both counts (single inbound route to
+flow-keeper; corr-id and pending-table explicitly deprecated). So it is not an expensive
+feature, it is two reversals of a ratified decision. Dropped.
 
-If a pull-style `/full` is still wanted later, the SC1-compatible way is for **flow-keeper** to
-serve it out of the answer store on the existing capture route — a request to `flow`, not code
-here.
+Replacement: the full answer is stored locally under a short id and **pushed as a document**
+next to the summary — outbound, occupies no slot. If a pull style is ever wanted, flow-keeper
+serves it from the store on the existing capture route: a request to `flow`, not code here.
 
-**C. No new BotFather bot.** The original open question assumed a new bot was likely. Recon
-inverts that: a new bot contradicts the ratified one-bot invariant, and with retrieval solved
-by (B), nothing in the MVP needs one.
+**C. The attachment is thresholded, not default.** Ruled explicitly: a channel that ships a
+file after every Stop gets muted wholesale and the feature dies of its own success. So the
+document is attached only when the full answer is materially longer than what the summary
+already delivered — `len(full) ≥ 1500 and len(full) > 2 × len(summary)`. Both conditions matter:
+the first stops noise, the second stops attaching a file that merely repeats the message.
 
-**None of A/B/C is implemented.** They change the MVP's shape (the DoD names `/full <id>`), so
-they are a proposal to `area-system-architect`, not a decision taken here.
+**D. No new BotFather bot** — a second bot contradicts the one-bot invariant, and with (B)
+nothing needs one.
+
+**E. Fleet rollout is not this plugin's lane.** Who reports, how often, quiet hours = tiering,
+`flow`'s engine per SC1. Distribution = `orchestrator`. MVP ships one pilot agent on M1.
+
+### Known deviation from the ruling — attachments have no lever
+
+The ruling says that on a mesh host the plugin talks to the Bot API "not at all". That is
+achievable for text but **not** for documents: `log-bot-notify` sends text only
+(`notify.send(text: str) -> dict`), so there is no lever to carry `sendDocument`.
+
+Resolution taken: the attachment path calls the Bot API directly **even on a mesh host**, but
+strictly inside `tg_deliver._deliver_document()` — i.e. inside the very isolation the ruling
+exists to create, on the same token, still outbound-only. Nothing else about the ruling bends.
+Flagged to `area-system-architect` for ratification rather than assumed; if it is rejected, the
+alternatives are to drop attachments or to ask `epic-log-bot` for a document mode on the lever.
+
+Attachment failures are swallowed by design: a summary that arrives without its file is a
+degraded report, one that never arrives is a lost one.
 
 ## What is built (step 1)
 
@@ -142,7 +163,7 @@ Verified 2026-07-29: 19 unit tests green (`pytest tests/ -q`); network smoke aga
 Bot API returns `HTTP 401 Unauthorized` and exit `1` with an invalid token — the request
 reaches Telegram and the failure path works end to end; only a valid token is absent.
 
-## Step 2 — Stop hook (specified, not built)
+## Step 2 — Stop hook producer (built)
 
 `hooks/hooks.json` registers a `Stop` hook running `python3 ${CLAUDE_PLUGIN_ROOT}/hooks/tg_summary.py`.
 Logic mirrors `speak-summary.py`:
@@ -158,16 +179,30 @@ Logic mirrors `speak-summary.py`:
 Agent identity: the slug comes from `SCION_AGENT_SLUG` — the same variable `page` uses —
 falling back to the working directory name. Without it a phone full of reports is unreadable.
 
+Verified 2026-07-29 on M1, one pilot agent (`epic-tg-bot`): a synthetic Stop payload produced a
+stored answer and a live Telegram message through the lever — `log-bot.log` records
+`[notify] sent 110 chars` at 14:18:33. 57 tests green.
+
+## The outbound-only invariant, enforced
+
+`tests/test_no_inbound.py` parses every non-test Python file with `ast`, strips docstrings, and
+fails if `getUpdates` / `setWebhook` / `webhook` appears in any executable string or identifier.
+Prose explaining the ban stays legal; a real call cannot hide, because invoking a Bot API method
+needs the name in an executable string. The suite also asserts the check itself would catch a
+planted violation and that the file list is non-empty — a guard that cannot fail guards nothing.
+
 ## Layout, and where it deviates from repo convention
 
 ```
 plugins/tg-report/
 ├── .claude-plugin/plugin.json
+├── README.md
 ├── docs/DESIGN.md            ← this file
-├── hooks/hooks.json          (step 2)
-├── hooks/tg_summary.py       (step 2)
-├── scripts/tg_send.py        portable delivery backend
-└── tests/test_tg_send.py
+├── hooks/hooks.json
+├── hooks/tg_summary.py       producer — the genuinely new piece
+├── scripts/tg_deliver.py     the single delivery door
+├── scripts/tg_send.py        direct Bot API backend
+└── tests/                    test_tg_send · test_tg_deliver · test_tg_summary · test_no_inbound
 ```
 
 Repo precedent puts hook scripts in `hooks/scripts/`. Here delivery sits in a plugin-level

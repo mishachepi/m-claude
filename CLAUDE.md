@@ -27,6 +27,7 @@ Request → Playbook exists? → Execute
 | **docs** | Documentation sync from code changes |
 | **research** | Multi-agent research + brainstorming |
 | **worktree-flow** | Parallel Claude Code agents on native git worktrees |
+| **tg-report** | Agents report finished turns to Telegram — summary + attached full answer |
 
 ## Documentation
 
@@ -38,6 +39,7 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 | `docs/plugin-docs.md` | docs, documentation, update docs | Docs plugin components |
 | `docs/plugin-research.md` | research, brainstorm, spec | Research plugin components |
 | `docs/plugin-worktree-flow.md` | worktree, parallel agents, merge, tmux | Worktree Flow plugin components |
+| `docs/plugin-tg-report.md` | telegram, report, stop hook, notify | TG Report plugin components |
 
 ## Prerequisites
 
@@ -45,5 +47,6 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 |------|--------|---------|
 | plugin-dev | core | Claude Code marketplace |
 | tmux | worktree-flow | `brew install tmux` |
+| `log-bot-notify` | tg-report (mesh hosts only) | ships with the LSA vault-tools log-bot package |
 
 Don't forget to update README.md after changes.

@@ -10,6 +10,7 @@
 | [docs](./plugins/docs/) | Keep documentation in sync with code changes |
 | [research](./plugins/research/) | Multi-agent research and brainstorming |
 | [worktree-flow](./plugins/worktree-flow/) | Parallel Claude Code agents on native git worktrees |
+| [tg-report](./plugins/tg-report/) | Agents report finished turns to Telegram |
 
 ## Core Beliefs
 
@@ -33,6 +34,7 @@ Request → Playbook exists? → Execute
 | Claude Code | all | https://claude.ai/code |
 | plugin-dev | core | Claude Code marketplace |
 | tmux | worktree-flow | `brew install tmux` |
+| `log-bot-notify` | tg-report (mesh hosts) | LSA vault-tools log-bot package |
 
 ## Quick Start
 
@@ -45,6 +47,7 @@ claude plugin add ./plugins/core
 claude plugin add ./plugins/docs
 claude plugin add ./plugins/research
 claude plugin add ./plugins/worktree-flow
+claude plugin add ./plugins/tg-report
 
 # Initialize in your project
 /init local
@@ -58,12 +61,14 @@ m-claude/
 │   ├── core/          # Commands, agents, skills for self-learning
 │   ├── docs/          # Documentation sync from code changes
 │   ├── research/      # Multi-agent research + brainstorming
-│   └── worktree-flow/ # Parallel agents on native git worktrees
+│   ├── worktree-flow/ # Parallel agents on native git worktrees
+│   └── tg-report/     # Telegram reporting on turn completion
 ├── docs/              # Framework documentation
 │   ├── plugin-core.md
 │   ├── plugin-docs.md
 │   ├── plugin-research.md
-│   └── plugin-worktree-flow.md
+│   ├── plugin-worktree-flow.md
+│   └── plugin-tg-report.md
 └── CLAUDE.md          # Project instructions
 ```
 
