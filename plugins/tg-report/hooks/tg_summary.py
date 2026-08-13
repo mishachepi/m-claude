@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Stop hook: report the finished turn to Telegram.
 
-Mirrors ~/dotfiles/claude/hooks/speak-summary.py — read the transcript, take the
-last assistant text, extract a summary — but delivers to Telegram instead of TTS,
-and additionally stores the full answer so a long result is not lost to the
-4096-char message limit.
+Reads the session transcript, takes the last assistant text, extracts a summary
+and sends it. The full answer is stored on disk as well, so a long result is not
+lost to Telegram's 4096-character message limit.
 
 Contract with the rest of the system:
   * delivery goes through scripts/tg_deliver.deliver() and nowhere else;
@@ -59,12 +58,15 @@ def state_dir() -> Path:
     return root / "tg-report"
 
 
-def agent_slug() -> str:
-    """Who is reporting. Without this a phone full of reports is unreadable."""
-    for var in ("SCION_AGENT_SLUG", "CLAUDE_AGENT_SLUG"):
-        value = os.environ.get(var)
-        if value:
-            return value
+def agent_label() -> str:
+    """Who is reporting. Without this a phone full of reports is unreadable.
+
+    Set `TG_REPORT_LABEL` per agent when you run several; the working directory
+    name is a reasonable default for a single project.
+    """
+    label = (os.environ.get("TG_REPORT_LABEL") or "").strip()
+    if label:
+        return label
     return Path.cwd().name or "agent"
 
 
@@ -197,7 +199,7 @@ def run(hook_input: dict) -> str | None:
     if not summary:
         return None
 
-    slug = agent_slug()
+    slug = agent_label()
     answer_id, answer_path = store_answer(full, slug)
     prune_answers()
 

@@ -10,11 +10,12 @@ Usage:
     tg_send.py --text "quiet ping" --silent
 
 `send_document()` is a library primitive with exactly one caller —
-`tg_deliver._deliver_document()`. It is deliberately NOT exposed on this CLI: the
-attachment path is interim debt owed to the SC1 sunset flip, and it is worth
-keeping to a single site (enforced by tests/test_no_inbound.py).
+`tg_deliver._deliver_document()`. It is deliberately NOT exposed on this CLI:
+attachments are the one path that cannot be routed through an external notify
+command, so keeping them to a single call site is what allows the transport to
+be swapped in one place (enforced by tests/test_no_inbound.py).
 
-Config resolution (first hit wins), see docs/DESIGN.md:
+Config resolution (first hit wins), see ../docs/DESIGN.md:
     1. CLI flags        --token / --chat-id
     2. env              TG_REPORT_BOT_TOKEN / TG_REPORT_CHAT_ID
     3. config file      $TG_REPORT_CONFIG or ~/.config/tg-report/config.json
