@@ -27,7 +27,7 @@ import tg_summary  # noqa: E402
 @pytest.fixture(autouse=True)
 def isolated_state(monkeypatch, tmp_path):
     monkeypatch.setenv("TG_REPORT_STATE_DIR", str(tmp_path / "state"))
-    monkeypatch.setenv("SCION_AGENT_SLUG", "pilot")
+    monkeypatch.setenv("TG_REPORT_LABEL", "pilot")
 
 
 def age(path: Path, days: int) -> None:

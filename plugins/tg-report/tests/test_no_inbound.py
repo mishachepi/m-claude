@@ -1,8 +1,9 @@
 """The outbound-only invariant, enforced instead of promised.
 
-A second `getUpdates` consumer on the mesh bot silently steals updates from the
-capture daemon — it already happened once and the messages were lost for good,
-because the Bot API keeps no history. So this plugin must never grow an inbound
+A second `getUpdates` consumer on the same bot token silently steals updates from
+whatever else is already reading them: the Bot API hands each update to exactly
+one caller and keeps no history, so what one consumer takes, the other never
+learns it missed. So this plugin must never grow an inbound
 path, and "must never" is worth exactly as much as the test behind it.
 
 The check ignores docstrings and comments — prose *about* the ban (this file,
@@ -113,11 +114,12 @@ def call_sites(tree: ast.AST, callee: str) -> list[str | None]:
 
 
 def test_attachment_path_does_not_spread():
-    """Ratification condition (Area, 2026-07-29): exactly one place sends a document.
+    """Exactly one place in the plugin sends a document.
 
-    The interim direct-Bot-API attachment path is only acceptable while it stays
-    inside `_deliver_document()`, so that SC1's sunset flip has a single site to
-    change. This test is what keeps that true.
+    Attachments are the one path that cannot go through an external notify
+    command, so they talk to the Bot API directly. That is only acceptable while
+    it stays inside `_deliver_document()` — one site to change when the transport
+    changes. This test is what keeps that true.
     """
     offenders: list[str] = []
     for source in python_sources():

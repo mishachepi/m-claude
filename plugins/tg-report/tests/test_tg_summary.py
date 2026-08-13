@@ -18,7 +18,7 @@ import tg_summary  # noqa: E402
 @pytest.fixture(autouse=True)
 def isolated_state(monkeypatch, tmp_path):
     monkeypatch.setenv("TG_REPORT_STATE_DIR", str(tmp_path / "state"))
-    monkeypatch.setenv("SCION_AGENT_SLUG", "epic-tg-bot")
+    monkeypatch.setenv("TG_REPORT_LABEL", "reporter")
 
 
 @pytest.fixture
@@ -129,7 +129,7 @@ def test_run_delivers_summary_with_slug(tmp_path, delivered):
     path = transcript(tmp_path, "the result is ready")
     tg_summary.run({"transcript_path": path})
 
-    assert delivered[0]["text"].startswith("[epic-tg-bot] the result is ready")
+    assert delivered[0]["text"].startswith("[reporter] the result is ready")
     assert delivered[0]["document"] is None
 
 
@@ -167,10 +167,14 @@ def test_run_is_a_noop_on_empty_final_text(tmp_path, delivered):
     assert delivered == []
 
 
-def test_slug_falls_back_when_unset(monkeypatch):
-    monkeypatch.delenv("SCION_AGENT_SLUG", raising=False)
-    monkeypatch.delenv("CLAUDE_AGENT_SLUG", raising=False)
-    assert tg_summary.agent_slug()
+def test_label_falls_back_to_the_working_directory(monkeypatch):
+    monkeypatch.delenv("TG_REPORT_LABEL", raising=False)
+    assert tg_summary.agent_label()
+
+
+def test_label_is_used_when_set(monkeypatch):
+    monkeypatch.setenv("TG_REPORT_LABEL", "build-agent")
+    assert tg_summary.agent_label() == "build-agent"
 
 
 # ----------------------------------------------------------------------- main

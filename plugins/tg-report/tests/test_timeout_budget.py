@@ -62,13 +62,15 @@ def clean_env(monkeypatch, tmp_path):
     for var in ("TG_REPORT_BOT_TOKEN", "TG_REPORT_CHAT_ID", "TG_REPORT_FORCE_DIRECT"):
         monkeypatch.delenv(var, raising=False)
     monkeypatch.setenv("TG_REPORT_CONFIG", str(tmp_path / "absent.json"))
-    monkeypatch.setenv("LOG_BOT_TOKEN", "TOK")
-    monkeypatch.setenv("TELEGRAM_USER_ID", "42")
+    monkeypatch.delenv("TG_REPORT_NOTIFY_CMD", raising=False)
+    monkeypatch.setenv("TG_REPORT_BOT_TOKEN", "TOK")
+    monkeypatch.setenv("TG_REPORT_CHAT_ID", "42")
 
 
 def test_document_uses_the_document_timeout_not_an_escalated_one(monkeypatch, tmp_path):
     """The old code forced max(timeout, 60) here — that was the whole defect."""
-    monkeypatch.setattr(tg_deliver.shutil, "which", lambda _n: "/bin/lever")
+    monkeypatch.setenv("TG_REPORT_NOTIFY_CMD", "my-notifier")
+    monkeypatch.setattr(tg_deliver.shutil, "which", lambda name: f"/bin/{name}")
     monkeypatch.setattr(
         tg_deliver.subprocess, "run", lambda *a, **k: type("P", (), {"returncode": 0, "stderr": ""})()
     )
@@ -95,7 +97,8 @@ def test_text_uses_the_text_timeout(monkeypatch):
 
 
 def test_lever_gets_the_text_timeout_and_a_hang_is_reported(monkeypatch):
-    monkeypatch.setattr(tg_deliver.shutil, "which", lambda _n: "/bin/lever")
+    monkeypatch.setenv("TG_REPORT_NOTIFY_CMD", "my-notifier")
+    monkeypatch.setattr(tg_deliver.shutil, "which", lambda name: f"/bin/{name}")
 
     def hang(*_a, **kwargs):
         raise tg_deliver.subprocess.TimeoutExpired(cmd="lever", timeout=kwargs["timeout"])

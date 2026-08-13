@@ -34,7 +34,6 @@ Request → Playbook exists? → Execute
 | Claude Code | all | https://claude.ai/code |
 | plugin-dev | core | Claude Code marketplace |
 | tmux | worktree-flow | `brew install tmux` |
-| `log-bot-notify` | tg-report (mesh hosts) | LSA vault-tools log-bot package |
 
 ## Quick Start
 
@@ -68,8 +67,7 @@ m-claude/
 │   ├── plugin-docs.md
 │   ├── plugin-research.md
 │   ├── plugin-worktree-flow.md
-│   ├── plugin-tg-report.md
-│   └── handover-tg-report-ru.md   # merge acceptance record, owner-facing (Russian)
+│   └── plugin-tg-report.md
 └── CLAUDE.md          # Project instructions
 ```
 

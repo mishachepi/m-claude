@@ -9,8 +9,8 @@
 | Hook (`Stop`) | `hooks/tg_summary.py` | Transcript → summary → store full answer → deliver |
 | Hook config | `hooks/hooks.json` | Registers the `Stop` hook, 30s timeout |
 | Script | `scripts/tg_deliver.py` | Single delivery door; chooses the backend |
-| Script | `scripts/tg_send.py` | Direct Bot API transport (outbound only) |
-| Tests | `tests/` | 57 tests, incl. the enforced outbound-only invariant |
+| Script | `scripts/tg_send.py` | Telegram Bot API transport (outbound only) |
+| Tests | `tests/` | 80 tests, incl. the enforced outbound-only invariant |
 
 ## Mechanism
 
@@ -21,7 +21,7 @@
    answers older than the retention window are pruned on write.
 4. The summary is the text after the trigger emoji (`📨`) when the agent wrote one, otherwise
    the opening lines, capped in both lines and characters.
-5. `tg_deliver.deliver()` sends `[<slug>] <summary>`, attaching the stored file only above the
+5. `tg_deliver.deliver()` sends `[<label>] <summary>`, attaching the stored file only above the
    threshold.
 6. **Any failure exits 0.** A reporting channel must never break the work it reports on.
 
@@ -29,35 +29,32 @@
 
 | Condition | Backend |
 |---|---|
-| `log-bot-notify` on `PATH` | the mesh lever — same bot, same token |
-| lever absent (non-LSA host) | direct Bot API via `tg_send.py`, same credentials |
-| attachments (any host) | direct Bot API — the lever is text-only |
+| `TG_REPORT_NOTIFY_CMD` set | that command, with the message as its last argument |
+| otherwise (default) | Telegram Bot API via `tg_send.py` |
+| attachments | always the Bot API — a command cannot portably take a file |
 
-All of it lives inside `tg_deliver.py` so that the SC1 backend flip to
-`scion message --channel telegram` touches exactly one function.
-
-The attachment row is **interim debt**, not architecture: the mesh lever is text-only, so
-documents go direct even on a mesh host. It is confined to `_deliver_document()` by a test and
-retires with the SC1 sunset flip. That flip has a trap — `scion message --attach` silently drops
-absolute paths outside `/workspace` and `/scion-volumes`, and the answer store is outside both.
-See `plugins/tg-report/docs/DESIGN.md`.
+Both live inside `tg_deliver.py`, so routing reports through different
+infrastructure means changing one function. The attachment exception is confined
+to `_deliver_document()` by a test, so the exception cannot spread.
 
 ## Invariants
 
 - **Outbound only.** No `getUpdates`, no webhook — enforced by `tests/test_no_inbound.py`,
   which parses the sources with `ast`, ignores docstrings, and also proves it would catch a
-  planted violation.
-- **No bot of its own.** The plugin never provisions a token; on a mesh host it does not even
-  need one.
+  planted violation. The Bot API gives each update to exactly one caller and keeps no history,
+  so a second poller on a shared token steals messages irrecoverably.
 - **No secrets in the repo.** Credentials come from the environment or
   `~/.config/tg-report/config.json`.
+- **Delivery fits the hook's timeout budget**, asserted against `hooks.json` by a test.
+- **The answer store never deletes files it did not write** — filename pattern plus a marker
+  file, both required before pruning.
 
 ## Out of scope
 
-Tiering (who reports, how often, quiet hours) and fleet distribution belong to the mesh's
-`flow` and `orchestrator` lanes, not to this plugin. Ship it to one pilot agent first.
+Who reports, how often, and quiet hours are policy for whatever schedules your agents — not for
+a Stop hook that must finish in seconds. Enable it for one agent first.
 
 ## Design record
 
-`plugins/tg-report/docs/DESIGN.md` — recon findings, the Area ruling of 2026-07-29, and the one
-recorded deviation (attachments have no lever).
+`plugins/tg-report/docs/DESIGN.md` — the rationale behind the three layers, the outbound-only
+ban, and the one recorded deviation (attachments cannot use a notify command).

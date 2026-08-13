@@ -1,26 +1,29 @@
 #!/usr/bin/env python3
 """tg-deliver — the single delivery door for tg-report.
 
-Everything this plugin sends to the user goes through `deliver()`. Nothing else
-in the plugin may talk to a transport. That isolation is the whole point: SC1
-(the mesh's Telegram layer) carries a standing obligation to flip its backend to
-native `scion message --channel telegram`, and only code whose transport lives
-behind one function survives that flip. See docs/DESIGN.md.
+Everything this plugin sends goes through `deliver()`. Nothing else in the plugin
+may talk to a transport. That isolation is the point: swapping how reports reach
+you should change one function here and nothing anywhere else.
 
-Backend order:
-    1. `log-bot-notify` — the mesh lever. Preferred whenever it is on PATH.
-       Same bot, same token, one-bot invariant intact. Text only.
-    2. direct Bot API via tg_send — portable fallback, used ONLY when the lever
-       is absent (non-LSA host), and for attachments, which the lever cannot do.
+Backends, in order:
+    1. An external notify command, when `TG_REPORT_NOTIFY_CMD` is set. Use this
+       to route reports through infrastructure you already run (a notifier of
+       your own, a bot wrapper, a queue). It receives the message text as its
+       last argument and is expected to exit 0. Text only.
+    2. The direct Bot API via tg_send — the default, and the only path that can
+       carry attachments.
 
 Hard invariant, enforced by tests/test_no_inbound.py: this plugin contains no
-`getUpdates` and no webhook code. It is outbound-only, forever. A second inbound
-consumer on the mesh bot silently steals updates from the capture daemon.
+`getUpdates` and no webhook code. It is outbound-only, forever. Anything that
+polls for updates competes with every other consumer of the same bot token, and
+the Bot API delivers each update exactly once — whoever asks first wins, and the
+loser never learns what it missed.
 """
 
 from __future__ import annotations
 
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -30,8 +33,6 @@ from typing import Literal
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import tg_send  # noqa: E402
-
-LEVER = "log-bot-notify"
 
 # ---------------------------------------------------------------------------
 # Timeout budget.
@@ -46,45 +47,51 @@ TEXT_TIMEOUT = 8.0
 DOCUMENT_TIMEOUT = 15.0
 TOTAL_BUDGET = TEXT_TIMEOUT + DOCUMENT_TIMEOUT
 
-Backend = Literal["lever", "direct", "none"]
+Backend = Literal["command", "direct"]
 
 
 class DeliveryError(RuntimeError):
     """Nothing could deliver the message."""
 
 
-def lever_path() -> str | None:
-    """Absolute path to the mesh lever, or None on a host without it."""
+def notify_command() -> list[str] | None:
+    """The configured external notify command, or None to use the Bot API.
+
+    Returns the argv prefix; the message text is appended by the caller. The
+    executable is resolved through PATH so a misconfigured command fails here,
+    loudly and before any network call, rather than as an opaque OSError later.
+    """
     if os.environ.get("TG_REPORT_FORCE_DIRECT") == "1":
         return None
-    return shutil.which(LEVER)
+
+    raw = (os.environ.get("TG_REPORT_NOTIFY_CMD") or "").strip()
+    if not raw:
+        return None
+
+    try:
+        argv = shlex.split(raw)
+    except ValueError as exc:
+        raise DeliveryError(f"TG_REPORT_NOTIFY_CMD is not parseable: {exc}") from exc
+    if not argv:
+        return None
+
+    resolved = shutil.which(argv[0])
+    if not resolved:
+        raise DeliveryError(f"TG_REPORT_NOTIFY_CMD not found on PATH: {argv[0]}")
+    return [resolved, *argv[1:]]
 
 
-def _send_via_lever(text: str, lever: str, timeout: float) -> None:
+def _send_via_command(text: str, argv: list[str], timeout: float) -> None:
     try:
         proc = subprocess.run(
-            [lever, text], capture_output=True, timeout=timeout, text=True
+            [*argv, text], capture_output=True, timeout=timeout, text=True
         )
     except subprocess.TimeoutExpired as exc:
-        raise DeliveryError(f"{LEVER} exceeded {timeout}s") from exc
+        raise DeliveryError(f"{argv[0]} exceeded {timeout}s") from exc
     if proc.returncode != 0:
         raise DeliveryError(
-            f"{LEVER} exited {proc.returncode}: {proc.stderr.strip()[:200]}"
+            f"{argv[0]} exited {proc.returncode}: {proc.stderr.strip()[:200]}"
         )
-
-
-def _resolve_direct_config() -> tuple[str, str]:
-    """Token/chat for the direct backend.
-
-    Accepts the mesh bot's own variable names as a source so that a pilot host
-    reuses the existing bot rather than provisioning a second one. This module
-    never reads another package's config files — only the environment and this
-    plugin's own config.
-    """
-    return tg_send.resolve_config(
-        os.environ.get("LOG_BOT_TOKEN"),
-        os.environ.get("TELEGRAM_USER_ID"),
-    )
 
 
 def deliver(
@@ -103,12 +110,12 @@ def deliver(
     if not text:
         raise DeliveryError("refusing to deliver empty text")
 
-    lever = lever_path()
-    if lever:
-        _send_via_lever(text, lever, TEXT_TIMEOUT)
-        backend: Backend = "lever"
+    argv = notify_command()
+    if argv:
+        _send_via_command(text, argv, TEXT_TIMEOUT)
+        backend: Backend = "command"
     else:
-        token, chat_id = _resolve_direct_config()
+        token, chat_id = tg_send.resolve_config()
         tg_send.send_message(text, token=token, chat_id=chat_id, timeout=TEXT_TIMEOUT)
         backend = "direct"
 
@@ -119,19 +126,23 @@ def deliver(
 
 
 def _deliver_document(document: Path, caption: str) -> None:
-    """Attachments have no lever — `log-bot-notify` sends text only.
+    """Attachments always go through the Bot API.
 
-    So this one path talks to the Bot API directly even on a mesh host. It stays
-    inside this module precisely so the SC1 backend flip has a single place to
-    change. Documented as a deviation in docs/DESIGN.md.
+    An external notify command takes text, so there is no portable way to hand it
+    a file. This is the one place in the plugin where the transport choice is not
+    free, and it stays inside this module so that changing transports still means
+    changing one file.
+
+    Best-effort by design: the summary has already been delivered by the time we
+    get here, and a missing attachment must never turn into a failed turn.
     """
     if not document.exists():
         return
     try:
-        token, chat_id = _resolve_direct_config()
+        token, chat_id = tg_send.resolve_config()
     except tg_send.ConfigError:
-        # No token reachable for the attachment path: the summary already went
-        # out through the lever, and a missing attachment must not fail a turn.
+        # No credentials for the attachment path — e.g. a setup that delivers text
+        # through a command and never configured the Bot API directly.
         return
     try:
         tg_send.send_document(
