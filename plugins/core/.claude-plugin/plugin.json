@@ -1,6 +1,6 @@
 {
   "name": "core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Self-learning workflow — init, learn, optimize, prompt engineering. Determinism + evolution loop.",
   "author": {
     "name": "mikhail_chepkin",
