@@ -13,5 +13,17 @@
     "evolution",
     "learn",
     "prompt-engineering"
+  ],
+  "dependencies": [
+    {
+      "name": "qmd",
+      "marketplace": "qmd",
+      "version": "^0.1.0"
+    },
+    {
+      "name": "obsidian",
+      "marketplace": "obsidian-skills",
+      "version": "^1.0.0"
+    }
   ]
 }

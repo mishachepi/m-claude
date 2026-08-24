@@ -5,6 +5,10 @@
   "owner": {
     "name": "Mikhail Chepkin"
   },
+  "allowCrossMarketplaceDependenciesOn": [
+    "qmd",
+    "obsidian-skills"
+  ],
   "plugins": [
     {
       "name": "core",
