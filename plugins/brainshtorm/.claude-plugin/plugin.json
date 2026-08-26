@@ -1,0 +1,14 @@
+{
+  "name": "brainshtorm",
+  "version": "1.0.0",
+  "description": "Deep brainstorming through structured interview — turns an idea into a written spec document.",
+  "author": {
+    "name": "mikhail_chepkin",
+    "url": "https://github.com/mishachepi"
+  },
+  "repository": "https://github.com/mishachepi/m-claude",
+  "keywords": [
+    "brainstorm",
+    "spec-creation"
+  ]
+}

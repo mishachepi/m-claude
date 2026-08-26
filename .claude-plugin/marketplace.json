@@ -11,35 +11,68 @@
   ],
   "plugins": [
     {
-      "name": "core",
-      "description": "Self-learning workflow — init, learn, optimize, prompt engineering",
-      "version": "1.0.1",
-      "author": {
-        "name": "Mikhail Chepkin"
-      },
-      "source": "./plugins/core",
-      "category": "productivity",
-      "strict": false
-    },
-    {
-      "name": "docs",
-      "description": "Documentation management — init docs structure, update docs from code changes",
+      "name": "learn",
+      "description": "Capture session learnings as rules, skills, or CLAUDE.local.md updates; /init bootstrap + updater agent",
       "version": "1.0.0",
       "author": {
         "name": "Mikhail Chepkin"
       },
-      "source": "./plugins/docs",
+      "source": "./plugins/learn",
       "category": "productivity",
       "strict": false
     },
     {
-      "name": "research",
-      "description": "Research and brainstorming — multi-agent research, structured spec creation",
+      "name": "prompt-optimize",
+      "description": "Prompt engineering guide + CLAUDE.md optimization",
       "version": "1.0.0",
       "author": {
         "name": "Mikhail Chepkin"
       },
-      "source": "./plugins/research",
+      "source": "./plugins/prompt-optimize",
+      "category": "productivity",
+      "strict": false
+    },
+    {
+      "name": "init",
+      "description": "Set up a project's documentation structure — docs/, CLAUDE.md index, AGENT.md",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/init",
+      "category": "productivity",
+      "strict": false
+    },
+    {
+      "name": "update",
+      "description": "Keep documentation in sync with code changes",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/update",
+      "category": "productivity",
+      "strict": false
+    },
+    {
+      "name": "brainshtorm",
+      "description": "Deep brainstorming through structured interview → spec document",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/brainshtorm",
+      "category": "productivity",
+      "strict": false
+    },
+    {
+      "name": "lead-research",
+      "description": "Multi-agent research — orchestrator spawns parallel subagents, synthesizes, cites",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/lead-research",
       "category": "productivity",
       "strict": false
     },

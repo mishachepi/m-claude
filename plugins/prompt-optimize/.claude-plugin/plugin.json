@@ -1,0 +1,15 @@
+{
+  "name": "prompt-optimize",
+  "version": "1.0.0",
+  "description": "Prompt engineering guide and CLAUDE.md optimization — Claude 4.x prompt engineering principles, context engineering, and instruction patterns.",
+  "author": {
+    "name": "mikhail_chepkin",
+    "url": "https://github.com/mishachepi"
+  },
+  "repository": "https://github.com/mishachepi/m-claude",
+  "keywords": [
+    "prompt-engineering",
+    "context-engineering",
+    "claude-md"
+  ]
+}

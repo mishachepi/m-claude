@@ -1,0 +1,14 @@
+{
+  "name": "init",
+  "version": "1.0.0",
+  "description": "Set up a project's documentation structure — docs/, CLAUDE.md index, AGENT.md entry point.",
+  "author": {
+    "name": "mikhail_chepkin",
+    "url": "https://github.com/mishachepi"
+  },
+  "repository": "https://github.com/mishachepi/m-claude",
+  "keywords": [
+    "documentation",
+    "bootstrap"
+  ]
+}
