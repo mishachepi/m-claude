@@ -1,0 +1,15 @@
+{
+  "name": "lead-research",
+  "version": "1.0.0",
+  "description": "Orchestrator methodology for multi-agent research — spawns parallel subagents, synthesizes, cites.",
+  "author": {
+    "name": "mikhail_chepkin",
+    "url": "https://github.com/mishachepi"
+  },
+  "repository": "https://github.com/mishachepi/m-claude",
+  "keywords": [
+    "research",
+    "multi-agent",
+    "parallel-search"
+  ]
+}

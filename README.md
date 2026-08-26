@@ -6,11 +6,16 @@
 
 | Plugin | Purpose |
 |--------|---------|
-| [core](./plugins/core/) | Self-learning workflow — init, learn, prompt-optimize |
-| [docs](./plugins/docs/) | Keep documentation in sync with code changes |
-| [research](./plugins/research/) | Multi-agent research and brainstorming |
+| [learn](./plugins/learn/) | Capture session learnings; `/init` bootstrap; `updater` agent |
+| [prompt-optimize](./plugins/prompt-optimize/) | Prompt engineering guide + CLAUDE.md optimization |
+| [init](./plugins/init/) | Set up a project's documentation structure |
+| [update](./plugins/update/) | Keep documentation in sync with code changes |
+| [brainshtorm](./plugins/brainshtorm/) | Structured brainstorming → spec document |
+| [lead-research](./plugins/lead-research/) | Multi-agent research |
 | [worktree-flow](./plugins/worktree-flow/) | Parallel Claude Code agents on native git worktrees |
 | [tg-report](./plugins/tg-report/) | Agents report finished turns to Telegram |
+
+One skill = one plugin: each installs, enables, and disables independently.
 
 ## Core Beliefs
 
@@ -32,21 +37,24 @@ Request → Playbook exists? → Execute
 | Tool | Required by | Install |
 |------|------------|---------|
 | Claude Code | all | https://claude.ai/code |
-| plugin-dev | core | Claude Code marketplace |
+| plugin-dev | learn (updater agent) | Claude Code marketplace |
 | tmux | worktree-flow | `brew install tmux` |
 
 ## Quick Start
 
 ```bash
-# Install from marketplace
-claude mcp add-from-marketplace m-claude-plugins
+# Register this marketplace
+claude plugin marketplace add mishachepi/m-claude
 
-# Or install individual plugins
-claude plugin add ./plugins/core
-claude plugin add ./plugins/docs
-claude plugin add ./plugins/research
-claude plugin add ./plugins/worktree-flow
-claude plugin add ./plugins/tg-report
+# Install the plugins you want
+claude plugin install learn@m-claude-plugins
+claude plugin install prompt-optimize@m-claude-plugins
+claude plugin install init@m-claude-plugins
+claude plugin install update@m-claude-plugins
+claude plugin install brainshtorm@m-claude-plugins
+claude plugin install lead-research@m-claude-plugins
+claude plugin install worktree-flow@m-claude-plugins
+claude plugin install tg-report@m-claude-plugins
 
 # Initialize in your project
 /init local
@@ -57,15 +65,21 @@ claude plugin add ./plugins/tg-report
 ```
 m-claude/
 ├── plugins/
-│   ├── core/          # Commands, agents, skills for self-learning
-│   ├── docs/          # Documentation sync from code changes
-│   ├── research/      # Multi-agent research + brainstorming
-│   ├── worktree-flow/ # Parallel agents on native git worktrees
-│   └── tg-report/     # Telegram reporting on turn completion
+│   ├── learn/           # Skill learn, /init command, updater agent
+│   ├── prompt-optimize/ # Prompt engineering skill
+│   ├── init/             # Docs-structure bootstrap skill
+│   ├── update/           # Docs-sync skill
+│   ├── brainshtorm/       # Brainstorming skill
+│   ├── lead-research/    # Research skill + 3 agents
+│   ├── worktree-flow/    # Parallel agents on native git worktrees
+│   └── tg-report/        # Telegram reporting on turn completion
 ├── docs/              # Framework documentation
-│   ├── plugin-core.md
-│   ├── plugin-docs.md
-│   ├── plugin-research.md
+│   ├── plugin-learn.md
+│   ├── plugin-prompt-optimize.md
+│   ├── plugin-init.md
+│   ├── plugin-update.md
+│   ├── plugin-brainshtorm.md
+│   ├── plugin-lead-research.md
 │   ├── plugin-worktree-flow.md
 │   └── plugin-tg-report.md
 └── CLAUDE.md          # Project instructions

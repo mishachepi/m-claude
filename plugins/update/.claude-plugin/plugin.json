@@ -1,0 +1,14 @@
+{
+  "name": "update",
+  "version": "1.0.0",
+  "description": "Keep project documentation in sync with code changes — updates docs/ from staged or committed diffs.",
+  "author": {
+    "name": "mikhail_chepkin",
+    "url": "https://github.com/mishachepi"
+  },
+  "repository": "https://github.com/mishachepi/m-claude",
+  "keywords": [
+    "documentation",
+    "sync"
+  ]
+}

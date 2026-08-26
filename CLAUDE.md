@@ -21,11 +21,16 @@ Request → Playbook exists? → Execute
 
 ## Plugins
 
+One skill = one plugin: each installs, enables, and disables independently.
+
 | Plugin | Purpose |
 |--------|---------|
-| **core** | Self-learning workflow: init, learn, prompt-optimize |
-| **docs** | Documentation sync from code changes |
-| **research** | Multi-agent research + brainstorming |
+| **learn** | Capture session learnings; `/init` bootstrap; `updater` agent |
+| **prompt-optimize** | Prompt engineering guide + CLAUDE.md optimization |
+| **init** | Set up a project's documentation structure |
+| **update** | Documentation sync from code changes |
+| **brainshtorm** | Structured brainstorming → spec document |
+| **lead-research** | Multi-agent research |
 | **worktree-flow** | Parallel Claude Code agents on native git worktrees |
 | **tg-report** | Agents report finished turns to Telegram — summary + attached full answer |
 
@@ -35,9 +40,12 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 
 | File | Triggers | Purpose |
 |------|----------|---------|
-| `docs/plugin-core.md` | core, init, learn, prompt-optimize | Core plugin components |
-| `docs/plugin-docs.md` | docs, documentation, update docs | Docs plugin components |
-| `docs/plugin-research.md` | research, brainstorm, spec | Research plugin components |
+| `docs/plugin-learn.md` | learn, init, self-learning, bootstrap | Learn plugin components |
+| `docs/plugin-prompt-optimize.md` | prompt-optimize, prompt engineering | Prompt Optimize plugin components |
+| `docs/plugin-init.md` | init docs, documentation setup | Init plugin components |
+| `docs/plugin-update.md` | update docs | Update plugin components |
+| `docs/plugin-brainshtorm.md` | brainstorm, spec | Brainshtorm plugin components |
+| `docs/plugin-lead-research.md` | research, lead-research | Lead Research plugin components |
 | `docs/plugin-worktree-flow.md` | worktree, parallel agents, merge, tmux | Worktree Flow plugin components |
 | `docs/plugin-tg-report.md` | telegram, report, stop hook, notify | TG Report plugin components |
 
@@ -45,7 +53,7 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 
 | Tool | Plugin | Install |
 |------|--------|---------|
-| plugin-dev | core | Claude Code marketplace |
+| plugin-dev | learn (updater agent) | Claude Code marketplace |
 | tmux | worktree-flow | `brew install tmux` |
 
 Don't forget to update README.md after changes.

@@ -1,0 +1,28 @@
+{
+  "name": "learn",
+  "version": "1.0.0",
+  "description": "Capture session learnings as rules, skills, or CLAUDE.local.md updates. Includes /init (bootstrap CLAUDE.md) and the updater agent (turn a completed task into a reusable command or skill).",
+  "author": {
+    "name": "mikhail_chepkin",
+    "url": "https://github.com/mishachepi"
+  },
+  "repository": "https://github.com/mishachepi/m-claude",
+  "keywords": [
+    "self-learning",
+    "determinism",
+    "evolution",
+    "bootstrap"
+  ],
+  "dependencies": [
+    {
+      "name": "qmd",
+      "marketplace": "qmd",
+      "version": ">=0.1.0"
+    },
+    {
+      "name": "obsidian",
+      "marketplace": "obsidian-skills",
+      "version": "^1.0.0"
+    }
+  ]
+}
