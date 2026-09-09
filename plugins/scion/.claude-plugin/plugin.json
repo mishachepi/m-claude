@@ -1,0 +1,17 @@
+{
+  "name": "scion",
+  "version": "0.1.0",
+  "description": "Skills for agents running in a scion mesh — the agent's template is its persistent memory: learn into it, not into the ephemeral home.",
+  "author": {
+    "name": "mikhail_chepkin",
+    "url": "https://github.com/mishachepi"
+  },
+  "repository": "https://github.com/mishachepi/m-claude",
+  "keywords": [
+    "scion",
+    "agents",
+    "memory",
+    "learn",
+    "template"
+  ]
+}
