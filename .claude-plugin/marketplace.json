@@ -97,6 +97,17 @@
       "source": "./plugins/tg-report",
       "category": "productivity",
       "strict": false
+    },
+    {
+      "name": "mcp-installer",
+      "description": "Find an MCP server for a task and install it via the current harness's native mechanism — always with confirmation before install",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/mcp-installer",
+      "category": "productivity",
+      "strict": false
     }
   ]
 }
