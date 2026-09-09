@@ -55,6 +55,17 @@
       "strict": false
     },
     {
+      "name": "scion",
+      "description": "Skills for agents in a scion mesh — the template is the agent's persistent memory: learn into it, not into the ephemeral home",
+      "version": "0.1.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/scion",
+      "category": "productivity",
+      "strict": false
+    },
+    {
       "name": "tg-report",
       "description": "Agents report to Telegram — a short summary on task completion, the full answer attached when it carries more",
       "version": "0.1.0",
