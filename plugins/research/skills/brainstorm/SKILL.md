@@ -1,5 +1,5 @@
 ---
-name: brainshtorm
+name: brainstorm
 description: Deep brainstorming and spec creation through structured interview. Use when user has an idea but needs to think it through, says "brainstorm", "let's think about", "spec out", or "help me plan".
 version: 1.0.0
 user-invocable: true
@@ -28,7 +28,7 @@ CI) and may be denied by permission settings.
 1. Stop. Do not run the interview.
 2. Do not invent answers on the user's behalf — a spec built from guessed answers looks
    authoritative and is worthless, which is worse than no spec.
-3. Report: "brainshtorm needs an interactive session; `AskUserQuestion` is unavailable here."
+3. Report: "brainstorm needs an interactive session; `AskUserQuestion` is unavailable here."
 4. Offer the honest alternative: draft an **assumptions document** instead — the questions
    that would have been asked, each with a proposed default and the risk of getting it
    wrong — clearly labelled as unvalidated, for a human to answer later.
@@ -136,7 +136,7 @@ After interview, compile:
 
 ## Step 4: Write Spec Document
 
-Read `${CLAUDE_PLUGIN_ROOT}/skills/brainshtorm/TEMPLATE.md` and fill it in from the interview.
+Read `${CLAUDE_PLUGIN_ROOT}/skills/brainstorm/TEMPLATE.md` and fill it in from the interview.
 That file is the template — do not improvise a structure or trim sections to what feels covered.
 Sections the interview did not reach stay in place, marked `{unknown — not covered in interview}`,
 so the gap is visible instead of silently absent.

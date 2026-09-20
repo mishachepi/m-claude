@@ -7,7 +7,7 @@
 | Skill | Description |
 |-------|-------------|
 | `lead-research` | Orchestrator methodology for parallel research with subagents |
-| `brainshtorm` | Deep brainstorming through structured interview → spec document |
+| `brainstorm` | Deep brainstorming through structured interview → spec document |
 
 ## Agents
 
