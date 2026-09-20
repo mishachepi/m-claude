@@ -1,6 +1,6 @@
 # {IDEA_NAME} Spec
 
-> Generated via a brainshtorm session on {DATE}
+> Generated via a brainstorm session on {DATE}
 
 ## Overview
 
