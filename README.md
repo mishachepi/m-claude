@@ -14,6 +14,8 @@
 | [lead-research](./plugins/lead-research/) | Multi-agent research |
 | [worktree-flow](./plugins/worktree-flow/) | Parallel Claude Code agents on native git worktrees |
 | [tg-report](./plugins/tg-report/) | Agents report finished turns to Telegram |
+| [mcp-installer](./plugins/mcp-installer/) | Find and install MCP servers (harness-agnostic, confirm-first) |
+| [scion](./plugins/scion/) | `scion-learn` — persistent learning for scion-mesh agents |
 
 One skill = one plugin: each installs, enables, and disables independently.
 
@@ -55,6 +57,8 @@ claude plugin install brainstorm@m-claude-plugins
 claude plugin install lead-research@m-claude-plugins
 claude plugin install worktree-flow@m-claude-plugins
 claude plugin install tg-report@m-claude-plugins
+claude plugin install mcp-installer@m-claude-plugins
+claude plugin install scion@m-claude-plugins
 
 # Initialize in your project
 /init local
