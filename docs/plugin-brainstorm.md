@@ -6,7 +6,7 @@ Structured brainstorming → spec document.
 
 | Type | Name | Purpose |
 |------|------|---------|
-| Skill | `brainshtorm` | Deep brainstorming → spec document |
+| Skill | `brainstorm` | Deep brainstorming → spec document |
 
 ## Flow
 
