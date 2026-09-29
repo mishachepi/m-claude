@@ -6,7 +6,7 @@
 
 | Skill | Description |
 |-------|-------------|
-| `brainshtorm` | Deep brainstorming through structured interview → spec document |
+| `brainstorm` | Deep brainstorming through structured interview → spec document |
 
 ## Flow
 

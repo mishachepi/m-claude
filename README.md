@@ -10,7 +10,7 @@
 | [prompt-optimize](./plugins/prompt-optimize/) | Prompt engineering guide + CLAUDE.md optimization |
 | [init](./plugins/init/) | Set up a project's documentation structure |
 | [update](./plugins/update/) | Keep documentation in sync with code changes |
-| [brainshtorm](./plugins/brainshtorm/) | Structured brainstorming → spec document |
+| [brainstorm](./plugins/brainstorm/) | Structured brainstorming → spec document |
 | [lead-research](./plugins/lead-research/) | Multi-agent research |
 | [worktree-flow](./plugins/worktree-flow/) | Parallel Claude Code agents on native git worktrees |
 | [tg-report](./plugins/tg-report/) | Agents report finished turns to Telegram |
@@ -51,7 +51,7 @@ claude plugin install learn@m-claude-plugins
 claude plugin install prompt-optimize@m-claude-plugins
 claude plugin install init@m-claude-plugins
 claude plugin install update@m-claude-plugins
-claude plugin install brainshtorm@m-claude-plugins
+claude plugin install brainstorm@m-claude-plugins
 claude plugin install lead-research@m-claude-plugins
 claude plugin install worktree-flow@m-claude-plugins
 claude plugin install tg-report@m-claude-plugins
@@ -69,7 +69,7 @@ m-claude/
 │   ├── prompt-optimize/ # Prompt engineering skill
 │   ├── init/             # Docs-structure bootstrap skill
 │   ├── update/           # Docs-sync skill
-│   ├── brainshtorm/       # Brainstorming skill
+│   ├── brainstorm/       # Brainstorming skill
 │   ├── lead-research/    # Research skill + 3 agents
 │   ├── worktree-flow/    # Parallel agents on native git worktrees
 │   └── tg-report/        # Telegram reporting on turn completion
@@ -78,7 +78,7 @@ m-claude/
 │   ├── plugin-prompt-optimize.md
 │   ├── plugin-init.md
 │   ├── plugin-update.md
-│   ├── plugin-brainshtorm.md
+│   ├── plugin-brainstorm.md
 │   ├── plugin-lead-research.md
 │   ├── plugin-worktree-flow.md
 │   └── plugin-tg-report.md
