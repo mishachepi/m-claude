@@ -1,22 +1,23 @@
 ---
 name: Learn
-description: This skill should be used when the user says "learn", "запомни", "save this learning", "remember this", "let's capture what we learned", "update rules", "add rule". Captures session learnings as rules, skills, or CLAUDE.local.md updates.
-version: 1.0.0
+description: This skill should be used when the user says "learn", "запомни", "save this learning", "remember this", "let's capture what we learned", "update rules", "add rule", "make this a plugin", "we needed an MCP for this". Captures session learnings as rules, skills, or CLAUDE.local.md updates — or, when the learning is bigger than the project, installs a missing MCP server or ships a new m-claude plugin.
+version: 1.1.0
 user-invocable: true
-allowed-tools: Read, Write, Edit, Bash(mkdir:*), Bash(mktemp:*), Bash(git:*), Bash(gh:*), Glob, AskUserQuestion
+allowed-tools: Read, Write, Edit, Bash(mkdir:*), Bash(mktemp:*), Bash(git:*), Bash(gh:*), Bash(claude:*), Glob, Skill, AskUserQuestion
 ---
 
 # Learn
 
-Capture learnings from the current session and persist them as actionable improvements: rules, skills, or CLAUDE.local.md updates.
+Capture learnings from the current session and persist them as actionable improvements: rules, skills, or CLAUDE.local.md updates — and, when the lesson is "we lacked a tool" or "this belongs in every project", an MCP install or a new m-claude plugin.
 
-All artifacts are created **locally** in the current project (`./.claude/`). Never write to global `~/.claude/`. The one exception is a learning about the m-claude framework itself (see **Framework update** below) — that one is never written into the current project at all; it goes through a clone/PR flow against the m-claude repo.
+All artifacts are created **locally** in the current project (`./.claude/`). Never write to global `~/.claude/`. The exceptions: a learning about the m-claude framework itself (**Framework update**) or a new cross-project plugin (**New plugin**) is never written into the current project at all — both go through a clone/PR flow against the m-claude repo; and an **MCP need** is installed through the harness's own `mcp add`, at a scope the user confirms.
 
 ## References
 
 When writing prompts for skills or commands, follow best practices from:
 - `${CLAUDE_PLUGIN_ROOT}/references/prompt-engineering.md` — Claude 4.x prompt engineering principles (own copy; source of truth is the `prompt-optimize` plugin, keep in sync when that one changes)
 - `${CLAUDE_PLUGIN_ROOT}/references/framework-update.md` — clone/edit/PR procedure for a learning about m-claude itself
+- `${CLAUDE_PLUGIN_ROOT}/references/new-plugin.md` — scaffolding a new m-claude plugin (files, marketplace registration, validation) on top of that clone/PR procedure
 
 ## Flow
 
@@ -35,6 +36,8 @@ Examples:
 - A rule/preference (→ .claude/rules/)
 - A reusable workflow (→ .claude/skills/ or .claude/commands/)
 - Project context update (→ CLAUDE.local.md)
+- A tool we were missing (→ install an MCP server)
+- A workflow every project should have (→ new m-claude plugin)
 
 What should I capture?
 ```
@@ -53,8 +56,10 @@ Based on the user's response, classify:
 | **Command** | Simple reusable action (<10 steps) | `./.claude/commands/{name}.md` |
 | **Context update** | Project info, architecture decisions, current focus | `./CLAUDE.local.md` |
 | **Framework update** | The learning is about m-claude itself — a plugin's skill/agent/command, not the current project | PR against `github.com/mishachepi/m-claude` |
+| **New plugin** | A reusable workflow worth having in *every* project, and no existing plugin covers it | New `plugins/<name>/` in m-claude, via PR |
+| **MCP need** | The session stalled or took a detour because a tool/data source was missing ("had to scrape X by hand", "couldn't query Y") | Installed MCP server, via the `mcp-installer` flow |
 
-A learning classifies as **Framework update** when it's about improving one of the installed m-claude plugins (wrong instructions, a missing step, a bug in a skill/agent/command) rather than about the project currently open. If unsure which, ask — writing a framework fix into the current project's `./.claude/` silently loses it, and writing a project-specific preference into m-claude pollutes the framework for every other project.
+A learning classifies as **Framework update** when it's about improving one of the installed m-claude plugins (wrong instructions, a missing step, a bug in a skill/agent/command) rather than about the project currently open. **Skill vs New plugin:** same artifact shape, different reach. Would it help in an unrelated project tomorrow, with the project-specific parts stripped out? Yes → New plugin. No → local Skill. **MCP need** is about a missing *capability* (external data, an API, a system to act on) — a missing *procedure* is a Skill/plugin instead. If unsure which, ask — writing a framework fix into the current project's `./.claude/` silently loses it, and writing a project-specific preference into m-claude pollutes the framework for every other project.
 
 **Check for an existing home first.** Glob `./.claude/rules/*.md` (and the relevant sibling
 directory) and read anything on the same subject. If the learning refines something already
@@ -129,6 +134,27 @@ allowed-tools: {tools needed}
 
 Read existing `./CLAUDE.local.md` (create if missing), then append or update the relevant section.
 
+#### For MCP needs:
+
+Hand off to the `mcp-installer` skill (Skill tool, `mcp-installer:mcp-installer`) with the need
+restated in one sentence — it detects the harness, searches, and installs. If that plugin isn't
+installed, follow the same flow yourself: search, present candidates, install with the harness's
+native `mcp add`, verify with its `mcp list`/`get`.
+
+**Always confirm before installing, even though the user already approved "the learning"** —
+approving a lesson is not approving new credentials or network access. Headless: report the
+server as *found, not installed*, with the exact command; never install unattended.
+
+Once installed, record it where the next session will find it: one line in `./CLAUDE.local.md`
+(what the MCP is for, its scope, which lesson prompted it) — unless it was installed at user scope
+for all projects, in which case say so in the report instead.
+
+#### For New plugins:
+
+Follow `${CLAUDE_PLUGIN_ROOT}/references/new-plugin.md` exactly — it builds on
+`framework-update.md` (clone, branch, PR) and adds the scaffold, marketplace registration, and
+validation. One skill = one plugin. `claude plugin validate` must be green before the commit.
+
 #### For Framework Updates:
 
 Follow `${CLAUDE_PLUGIN_ROOT}/references/framework-update.md` exactly — clone m-claude to a scratch
@@ -154,4 +180,6 @@ If yes, repeat from step 1. If no, done.
 - Everything stays local: `./.claude/` and `./CLAUDE.local.md`
 - Rules take effect immediately in new conversations
 - For skills/commands, follow the prompt-engineering reference principles: be explicit, add context (WHY), use positive instructions
-- Framework updates never touch `main` directly — always a fresh clone, a new branch, a PR. The PR review is the human-in-the-loop checkpoint for changes to a tool used across every project
+- MCP installs always get their own confirmation — the learning's approval doesn't cover new credentials or network access
+- New plugins: one skill = one plugin, stripped of project-specific paths/names/secrets, validated before commit
+- Framework updates and new plugins never touch `main` directly — always a fresh clone, a new branch, a PR. The PR review is the human-in-the-loop checkpoint for changes to a tool used across every project
