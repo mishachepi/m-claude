@@ -16,6 +16,7 @@
 | [tg-report](./plugins/tg-report/) | Agents report finished turns to Telegram |
 | [mcp-installer](./plugins/mcp-installer/) | Find and install MCP servers (harness-agnostic, confirm-first) |
 | [scion](./plugins/scion/) | `scion-learn` — persistent learning for scion-mesh agents |
+| [plugin-preflight](./plugins/plugin-preflight/) | Pre-push check for plugin repos: validate, `${CLAUDE_PLUGIN_ROOT}` paths, name consistency, secret scan |
 
 One skill = one plugin: each installs, enables, and disables independently.
 
@@ -59,6 +60,7 @@ claude plugin install worktree-flow@m-claude-plugins
 claude plugin install tg-report@m-claude-plugins
 claude plugin install mcp-installer@m-claude-plugins
 claude plugin install scion@m-claude-plugins
+claude plugin install plugin-preflight@m-claude-plugins
 
 # Initialize in your project
 /init local
