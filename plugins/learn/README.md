@@ -12,7 +12,7 @@
 
 | Skill | Description |
 |-------|-------------|
-| `learn` | Capture session learnings → rules, skills, or `CLAUDE.local.md` updates |
+| `learn` | Capture session learnings → rules, skills, or `CLAUDE.local.md` updates; install a missing MCP server (confirm-first, via `mcp-installer`); ship a cross-project workflow as a new m-claude plugin or fix m-claude itself (clone → branch → PR, never `main`) |
 
 ## Agents
 

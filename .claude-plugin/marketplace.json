@@ -12,8 +12,8 @@
   "plugins": [
     {
       "name": "learn",
-      "description": "Capture session learnings as rules, skills, or CLAUDE.local.md updates; /init bootstrap + updater agent",
-      "version": "1.0.0",
+      "description": "Capture session learnings as rules, skills, or CLAUDE.local.md updates — or install a missing MCP / ship a new m-claude plugin; /init bootstrap + updater agent",
+      "version": "1.1.0",
       "author": {
         "name": "Mikhail Chepkin"
       },
