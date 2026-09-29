@@ -119,6 +119,17 @@
       "source": "./plugins/mcp-installer",
       "category": "productivity",
       "strict": false
+    },
+    {
+      "name": "plugin-preflight",
+      "description": "Pre-push check for Claude Code plugin repos — validate, resolve ${CLAUDE_PLUGIN_ROOT} paths, name consistency, secret scan of the outgoing diff",
+      "version": "0.1.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/plugin-preflight",
+      "category": "productivity",
+      "strict": false
     }
   ]
 }
