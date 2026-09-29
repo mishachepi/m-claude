@@ -1,0 +1,8 @@
+{
+  "name": "plugin-preflight",
+  "version": "0.1.0",
+  "description": "Pre-push check for any Claude Code plugin repo — validate, resolve ${CLAUDE_PLUGIN_ROOT} paths, name consistency, secret scan of the outgoing diff.",
+  "author": { "name": "mikhail_chepkin", "url": "https://github.com/mishachepi" },
+  "repository": "https://github.com/mishachepi/m-claude",
+  "keywords": ["preflight", "validate", "marketplace", "secrets"]
+}

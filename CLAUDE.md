@@ -35,6 +35,7 @@ One skill = one plugin: each installs, enables, and disables independently.
 | **tg-report** | Agents report finished turns to Telegram — summary + attached full answer |
 | **mcp-installer** | Find and install MCP servers, harness-agnostic, always confirm before install |
 | **scion** | `scion-learn` — for agents in a scion mesh: learn into the template, not the ephemeral home |
+| **plugin-preflight** | Pre-push check for plugin repos: validate, `${CLAUDE_PLUGIN_ROOT}` paths, name consistency, secret scan |
 
 ## Documentation
 
@@ -50,6 +51,7 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 | `docs/plugin-lead-research.md` | research, lead-research | Lead Research plugin components |
 | `docs/plugin-worktree-flow.md` | worktree, parallel agents, merge, tmux | Worktree Flow plugin components |
 | `docs/plugin-tg-report.md` | telegram, report, stop hook, notify | TG Report plugin components |
+| `docs/plugin-plugin-preflight.md` | preflight, pre-push, marketplace check, broken path | Plugin Preflight plugin components |
 | `docs/troubleshooting.md` | error, fails, broken, corrupted | Known gotchas and fixes |
 
 ## Prerequisites
