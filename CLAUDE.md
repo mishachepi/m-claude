@@ -33,6 +33,8 @@ One skill = one plugin: each installs, enables, and disables independently.
 | **lead-research** | Multi-agent research |
 | **worktree-flow** | Parallel Claude Code agents on native git worktrees |
 | **tg-report** | Agents report finished turns to Telegram — summary + attached full answer |
+| **mcp-installer** | Find and install MCP servers, harness-agnostic, always confirm before install |
+| **scion** | `scion-learn` — for agents in a scion mesh: learn into the template, not the ephemeral home |
 
 ## Documentation
 

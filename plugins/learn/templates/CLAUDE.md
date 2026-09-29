@@ -1,6 +1,6 @@
 <!--
   Global CLAUDE.md template
-  Managed by m-claude /core:init (global)
+  Managed by m-claude /learn:init (global)
 -->
 
 ## Workflow

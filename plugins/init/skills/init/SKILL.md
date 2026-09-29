@@ -14,7 +14,7 @@ Given a target path, run every command against it (`mkdir -p <dir>/docs`, `git -
 resolve `CLAUDE.md`, `README.md`, `AGENT.md` and `docs/` under it, never under the invoking cwd.
 
 This skill scaffolds; it does not write content. `docs/` is left empty and the index table empty —
-the files come from `docs:update` or a human. Do not fill them with generic boilerplate to make the
+the files come from `update:update` or a human. Do not fill them with generic boilerplate to make the
 output look complete.
 
 ## What It Creates
@@ -73,7 +73,7 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 | File | Triggers | Purpose |
 |------|----------|---------|
 
-<!-- Use docs:update skill after adding docs to refresh this index -->
+<!-- Use update:update skill after adding docs to refresh this index -->
 ```
 
 ### 4. Create AGENT.md
@@ -117,5 +117,5 @@ Created/Updated:
 - AGENT.md            — AI agent entry point → CLAUDE.md
 - README.md           — {added docs section | skipped}
 
-Next: add .md files to docs/, then use docs:update skill
+Next: add .md files to docs/, then use update:update skill
 ```
