@@ -15,7 +15,6 @@
 | [worktree-flow](./plugins/worktree-flow/) | Parallel Claude Code agents on native git worktrees |
 | [tg-report](./plugins/tg-report/) | Agents report finished turns to Telegram |
 | [mcp-installer](./plugins/mcp-installer/) | Find and install MCP servers (harness-agnostic, confirm-first) |
-| [scion](./plugins/scion/) | `scion-learn` — persistent learning for scion-mesh agents |
 | [plugin-preflight](./plugins/plugin-preflight/) | Pre-push check for plugin repos: validate, `${CLAUDE_PLUGIN_ROOT}` paths, name consistency, secret scan |
 | [arc](./plugins/arc/) | Arc browser MCP server (macOS only): spaces and tabs, read-only |
 
@@ -60,7 +59,6 @@ claude plugin install lead-research@m-claude-plugins
 claude plugin install worktree-flow@m-claude-plugins
 claude plugin install tg-report@m-claude-plugins
 claude plugin install mcp-installer@m-claude-plugins
-claude plugin install scion@m-claude-plugins
 claude plugin install plugin-preflight@m-claude-plugins
 claude plugin install arc@m-claude-plugins            # macOS only, needs uv
 
@@ -82,7 +80,6 @@ m-claude/
 │   ├── worktree-flow/    # Parallel agents on native git worktrees
 │   ├── tg-report/        # Telegram reporting on turn completion
 │   ├── mcp-installer/    # Find and install MCP servers, confirm first
-│   ├── scion/            # scion-learn for agents in a scion mesh
 │   └── plugin-preflight/ # Pre-push check for plugin repos
 ├── docs/              # plugin-<name>.md per plugin, prompts_guide/, troubleshooting.md
 └── CLAUDE.md          # Project instructions

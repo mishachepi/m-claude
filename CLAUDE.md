@@ -36,7 +36,6 @@ One skill = one plugin: each installs, enables, and disables independently.
 | **worktree-flow** | Parallel Claude Code agents on native git worktrees |
 | **tg-report** | Agents report finished turns to Telegram — summary + attached full answer |
 | **mcp-installer** | Find and install MCP servers, harness-agnostic, always confirm before install |
-| **scion** | `scion-learn` — for agents in a scion mesh: learn into the template, not the ephemeral home |
 | **plugin-preflight** | Pre-push check for plugin repos: validate, `${CLAUDE_PLUGIN_ROOT}` paths, name consistency, secret scan |
 | **arc** | Arc browser MCP server via `uvx` (macOS only), read-only |
 
