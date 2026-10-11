@@ -1,4 +1,4 @@
-# Brainshtorm Plugin
+# Brainstorm Plugin
 
 Structured brainstorming → spec document.
 

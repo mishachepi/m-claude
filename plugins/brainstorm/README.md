@@ -1,4 +1,4 @@
-# Brainshtorm Plugin
+# Brainstorm Plugin
 
 > Deep brainstorming through structured interview → spec document.
 
