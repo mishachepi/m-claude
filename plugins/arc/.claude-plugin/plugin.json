@@ -16,7 +16,11 @@
   "mcpServers": {
     "arc": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/mishachepi/arc-mcp", "arc-mcp"]
+      "args": [
+        "--from",
+        "git+https://github.com/mishachepi/arc-mcp@b48d1007bb2e7f59bbbf98d9aba5dc86f17cd71d",
+        "arc-mcp"
+      ]
     }
   }
 }
