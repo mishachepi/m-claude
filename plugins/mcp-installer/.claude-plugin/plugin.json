@@ -1,6 +1,6 @@
 {
   "name": "mcp-installer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Find an MCP server for a task and install it via the current harness's native mechanism (Claude Code, Codex CLI, and others as they come up) — always with confirmation before install.",
   "author": {
     "name": "Mikhail Chepkin",

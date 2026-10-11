@@ -1,7 +1,7 @@
 ---
 name: Worktree Flow
 description: This skill should be used when the user asks to "spawn a worktree agent", "run tasks in parallel worktrees", "merge a worktree", "worktree flow", "параллельные агенты в worktree", "смерджи worktree", or wants to run/manage/merge parallel Claude Code sessions on isolated branches. Native flow — no external binaries.
-version: 2.0.0
+version: 2.0.1
 user-invocable: true
 allowed-tools: Bash, Read, Glob, Grep
 ---

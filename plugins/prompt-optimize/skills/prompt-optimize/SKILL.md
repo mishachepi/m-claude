@@ -1,7 +1,7 @@
 ---
 name: Prompt Optimize
 description: This skill should be used when the user asks to "optimize CLAUDE.md", "check my prompts", "improve prompt", "prompt engineering", "оптимизируй", "проверь CLAUDE.md", "prompt best practices", "fix my prompt", or needs to write, improve, or audit prompts and CLAUDE.md files.
-version: 2.0.0
+version: 1.0.1
 user-invocable: true
 allowed-tools: Read, Edit, Glob, AskUserQuestion
 ---

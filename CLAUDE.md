@@ -23,6 +23,8 @@ Request → Playbook exists? → Execute
 
 One skill = one plugin: each installs, enables, and disables independently.
 
+**Any change to a plugin = bump its `version`** in `plugin.json`, `marketplace.json` and the SKILL.md frontmatter. Installed plugins are cached per version; an unbumped change never reaches machines. Run `plugins/plugin-preflight/skills/plugin-preflight/scripts/preflight.sh .` before every push.
+
 | Plugin | Purpose |
 |--------|---------|
 | **learn** | Capture session learnings; `/learn:bootstrap`; `updater` agent |

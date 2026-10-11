@@ -1,7 +1,7 @@
 ---
 name: Docs Update
 description: This skill should be used when the user says "update docs", "обнови документацию", "sync docs", "refresh docs", "docs outdated", or after code changes that may affect documentation. Analyzes git diff and updates docs/, CLAUDE.md index, and README.md.
-version: 1.0.0
+version: 1.0.1
 user-invocable: true
 allowed-tools: Read, Write, Edit, Bash(git:*), Glob, Grep, AskUserQuestion
 ---

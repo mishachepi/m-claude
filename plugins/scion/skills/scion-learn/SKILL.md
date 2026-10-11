@@ -1,7 +1,7 @@
 ---
 name: Scion Learn
-description: This skill should be used when a scion agent wants to remember something durable — the user says "learn", "запомни", "remember this", OR the agent itself just hit a tool gotcha, had an assumption refuted, or was corrected. Routes the lesson into the agent's scion template (its only persistent memory); never into the ephemeral agent home.
-version: 0.1.0
+description: For scion mesh agents only ($SCION_AGENT is set). Use when a scion agent wants to remember something durable — the user says "learn", "запомни", "remember this", OR the agent itself just hit a tool gotcha, had an assumption refuted, or was corrected. Routes the lesson into the agent's scion template (its only persistent memory); never into the ephemeral agent home.
+version: 0.1.1
 user-invocable: true
 allowed-tools: Read, Write, Edit, Bash, Glob, AskUserQuestion
 ---

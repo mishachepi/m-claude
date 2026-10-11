@@ -1,9 +1,9 @@
 ---
 name: Docs Init
 description: This skill should be used when the user says "init docs", "setup documentation", "create docs structure", "add AGENT.md", "инициализируй документацию", or needs to set up documentation structure in a repository. Creates docs/ folder, CLAUDE.md index with progressive disclosure, and AGENT.md entry point.
-version: 1.0.0
+version: 1.0.1
 user-invocable: true
-allowed-tools: Read, Write, Edit, Bash(mkdir:*), Glob, AskUserQuestion
+allowed-tools: Read, Write, Edit, Bash(mkdir:*), Bash(git:*), Glob, AskUserQuestion
 ---
 
 # Docs Init

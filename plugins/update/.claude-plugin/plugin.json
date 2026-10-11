@@ -1,6 +1,6 @@
 {
   "name": "update",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Keep project documentation in sync with code changes — updates docs/ from staged or committed diffs.",
   "author": {
     "name": "Mikhail Chepkin",

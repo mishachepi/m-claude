@@ -1,7 +1,7 @@
 ---
 name: brainstorm
 description: Deep brainstorming and spec creation through structured interview. Use when user has an idea but needs to think it through, says "brainstorm", "let's think about", "spec out", or "help me plan".
-version: 1.0.0
+version: 1.0.1
 user-invocable: true
 allowed-tools: Read, Write, Edit, AskUserQuestion
 ---
@@ -167,7 +167,6 @@ Iterate if needed, then confirm:
 Brainstorm complete: {IDEA_NAME}
 
 Spec saved to: {path}
-Duration: {time}
 Interview rounds: {count}
 
 Next steps:

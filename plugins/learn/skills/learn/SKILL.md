@@ -10,6 +10,8 @@ allowed-tools: Read, Write, Edit, Bash(mkdir:*), Bash(mktemp:*), Bash(git:*), Ba
 
 Capture learnings from the current session and persist them as actionable improvements: rules, skills, or CLAUDE.local.md updates — and, when the lesson is "we lacked a tool" or "this belongs in every project", an MCP install or a new m-claude plugin.
 
+**Running as a scion agent?** If `$SCION_AGENT` is set, use the `scion:scion-learn` skill instead and stop here — a scion agent's home is ephemeral, its durable memory is its template, and `./.claude/` in whatever directory the agent happens to sit in is the wrong place.
+
 All artifacts are created **locally** in the current project (`./.claude/`). Never write to global `~/.claude/`. The exceptions: a learning about the m-claude framework itself (**Framework update**) or a new cross-project plugin (**New plugin**) is never written into the current project at all — both go through a clone/PR flow against the m-claude repo; and an **MCP need** is installed through the harness's own `mcp add`, at a scope the user confirms.
 
 ## References
@@ -177,7 +179,7 @@ If yes, repeat from step 1. If no, done.
 - Always ask before saving — don't auto-capture (headless: save and report, see Step 2)
 - Never silently overwrite: check `./.claude/rules/` for an existing file on the subject first
 - Keep rules atomic: one concept per rule
-- Everything stays local: `./.claude/` and `./CLAUDE.local.md`
+- Everything stays local: `./.claude/` and `./CLAUDE.local.md` — except framework updates / new plugins (PR against m-claude) and MCP installs at a scope the user picks
 - Rules take effect immediately in new conversations
 - For skills/commands, follow the prompt-engineering reference principles: be explicit, add context (WHY), use positive instructions
 - MCP installs always get their own confirmation — the learning's approval doesn't cover new credentials or network access
