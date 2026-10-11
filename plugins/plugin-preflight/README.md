@@ -1,6 +1,6 @@
 # Plugin Preflight Plugin
 
-> Run before pushing any repo that ships Claude Code plugins: catches what `claude plugin validate` misses — broken `${CLAUDE_PLUGIN_ROOT}` paths, stale plugin names, marketplace gaps, secrets in the outgoing diff.
+> Run before pushing any repo that ships Claude Code plugins: catches what `claude plugin validate` misses — broken `${CLAUDE_PLUGIN_ROOT}` paths, stale plugin names, marketplace gaps, secrets in the outgoing diff, changes shipped without a version bump.
 
 ## Skills
 

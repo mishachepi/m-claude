@@ -15,6 +15,7 @@ Pre-push check for any repo that ships Claude Code plugins.
 2. `${CLAUDE_PLUGIN_ROOT}/...` paths resolve inside their plugin (`validate` misses these)
 3. `name` consistent across dir / `plugin.json` / `marketplace.json`; versions match; no unregistered plugin dir; no stale `<name>@<marketplace>` references
 4. Secret scan of added lines in the outgoing diff (+ `gitleaks` if installed)
+5. Versions: a plugin changed since the base without a `version` bump fails; SKILL.md `version` must equal plugin.json
 
 ## Requires
 
