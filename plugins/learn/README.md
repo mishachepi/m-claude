@@ -6,13 +6,13 @@
 
 | Command | Description |
 |---------|-------------|
-| `/init` | Initialize context system (local `CLAUDE.local.md` or global `~/.claude/CLAUDE.md`) |
+| `/learn:bootstrap` | Initialize context system (local `CLAUDE.local.md` or global `~/.claude/CLAUDE.md`) |
 
 ## Skills
 
 | Skill | Description |
 |-------|-------------|
-| `learn` | Capture session learnings → rules, skills, or `CLAUDE.local.md` updates; install a missing MCP server (confirm-first, via `mcp-installer`); ship a cross-project workflow as a new m-claude plugin or fix m-claude itself (clone → branch → PR, never `main`) |
+| `learn` | Quality-gate a lesson, then persist it where the next session reads it: project rules/skills/`CLAUDE.local.md`, or — as a scion agent (`$SCION_AGENT` set) — the agent's template (`lessons.md`/`agents.md`; replaces the former `scion` plugin); install a missing MCP server (confirm-first, via `mcp-installer`); ship a cross-project workflow as a new m-claude plugin or fix m-claude itself (clone → branch → PR, never `main`) |
 
 ## Agents
 
@@ -27,7 +27,7 @@
 
 ## Context Structure
 
-After `/init local`:
+After `/learn:bootstrap local`:
 
 ```
 ./

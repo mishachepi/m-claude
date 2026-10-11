@@ -1,202 +1,87 @@
 ---
 name: Prompt Optimize
 description: This skill should be used when the user asks to "optimize CLAUDE.md", "check my prompts", "improve prompt", "prompt engineering", "оптимизируй", "проверь CLAUDE.md", "prompt best practices", "fix my prompt", or needs to write, improve, or audit prompts and CLAUDE.md files.
-version: 2.0.0
+version: 1.0.1
 user-invocable: true
 allowed-tools: Read, Edit, Glob, AskUserQuestion
 ---
 
 # Prompt Optimize
 
-Write effective prompts and optimize CLAUDE.md files following Anthropic best practices.
+Audit a CLAUDE.md file or a prompt, or help write one, following Anthropic best practices.
 
-## Two Modes
+## Blocking checks — always first, both modes
 
-### Mode 1: Optimize CLAUDE.md
+Two defects make an instruction set unexecutable however well it is formatted. They need actual
+reading, not counting, and they decide the verdict:
 
-Triggered by: "optimize", "check CLAUDE.md", "audit prompts"
+1. **Contradictions** — two instructions that cannot both be obeyed ("always use tabs" vs "never
+   use tabs"; "write notes to MIGRATION.md" vs "create no new files"). Report both quotes with line
+   numbers **and which one to keep** — never a contradiction without a resolution.
+2. **Vagueness** — no observable criterion ("be smart", "handle errors properly", "reasonably
+   fast", "where appropriate"). Propose the concrete rule that was probably meant.
 
-Analyze CLAUDE.md files and suggest improvements.
+Either found → the verdict can't be `GOOD`, whatever else passes.
 
-#### Scope
+## Mode 1 — audit a CLAUDE.md
 
-- `local` → `./CLAUDE.local.md`
-- `global` → `~/.claude/CLAUDE.md`
-- `all` or no input → both
-- an explicit file path → that file, and only that file (scope keywords are ignored)
+Scope: `local` → `./CLAUDE.local.md`; `global` → `~/.claude/CLAUDE.md`; `all`/nothing → both;
+an explicit path → only that file.
 
-#### Checklist
+After the blocking checks, the mechanical ones (a script could do these):
 
-| Rule | Threshold | Why |
-|------|-----------|-----|
-| File size | < 100 lines | Smaller = faster load, easier maintain |
-| Section count | 3-7 | Too few = incomplete, too many = cluttered |
-| Line length | < 120 chars | Readability |
-| No duplicate sections | unique headers | Avoid confusion |
-| Has required sections | Workflow, Principles | Core structure |
-| No TODO/FIXME | 0 | Unfinished work |
-| No contradicting instructions | 0 | Two rules that cannot both be obeyed make the file unusable |
-| No unresolvable vagueness | 0 | "be smart", "handle properly" carry no decision procedure |
-
-#### Analysis Steps
-
-1. **Size** — count lines, warn if > 100
-2. **Structure** — count sections, warn if < 3 or > 7
-3. **Required sections** — check for Workflow, Principles (global only)
-4. **Duplicates** — find duplicate headers
-5. **Unfinished** — search TODO, FIXME, XXX
-6. **Long lines** — count lines > 120 chars
-7. **Contradictions** — read the instructions and pair up any two that cannot both be followed
-   (e.g. "always use tabs" vs "never use tabs", "ask before editing" vs "never ask"). Steps 1-6
-   are mechanical and a script can do them; this step and step 8 need actual reading, and they
-   are the ones that decide whether the file is usable at all. Report each pair with both line
-   numbers and say which one to keep — never report a contradiction without a resolution.
-8. **Vagueness** — flag instructions that state no observable criterion ("be smart about it",
-   "handle errors properly"). For each, propose the concrete rule that was probably meant.
-
-#### Report
+| Check | Threshold | Why |
+|---|---|---|
+| Size | < 100 lines | loaded every session — every line costs context |
+| Sections | 3–7, unique headers | too few = incomplete, too many = cluttered |
+| Required sections (global only) | Workflow, Principles | core structure |
+| Unfinished | no TODO / FIXME / XXX | unfinished instructions get followed literally |
+| Line length | < 120 chars | readability |
 
 ```
-CLAUDE.md Analysis
-==================
-
-{filename}:
-Size: {lines} lines {OK | WARNING}
-Sections: {count} {OK | WARNING}
-Required: {OK | MISSING: list}
-Duplicates: {OK | FOUND: list}
-Unfinished: {OK | FOUND: count}
-Contradictions: {OK | FOUND: "{rule A}" (L{n}) vs "{rule B}" (L{m}) → keep {which}}
-Vagueness: {OK | FOUND: "{quote}" (L{n}) → suggest "{concrete rule}"}
-
-Suggestions:
-- {suggestion 1}
-- {suggestion 2}
-
+CLAUDE.md Analysis — {filename}
+Contradictions: {OK | "{A}" (L{n}) vs "{B}" (L{m}) → keep {which}}
+Vagueness:      {OK | "{quote}" (L{n}) → "{concrete rule}"}
+Size / Sections / Required / Unfinished / Long lines: {OK | WARNING: detail}
+Suggestions: …
 Overall: {GOOD | NEEDS ATTENTION}
 ```
 
-A file that passes every mechanical check but contradicts itself is NOT `GOOD` — contradictions
-and vagueness outrank size and formatting in the overall verdict.
+Offer fixes: delete the losing rule of a contradiction (never keep both), replace vague lines with
+the concrete rule, split an oversized file, add missing sections, resolve TODOs.
 
-#### Fix Offers
+## Mode 2 — write or review a prompt
 
-- File too large → offer to split
-- TODOs found → offer to review
-- Missing sections → offer to add
-- Contradiction found → offer to delete the losing rule (never keep both)
-- Vague instruction → offer to replace it with the concrete rule
+After the blocking checks, apply the principles:
 
-### Mode 2: Prompt Engineering Guide
+1. **Explicit** — say exactly what's wanted. "Create an analytics dashboard" → "…with filtering,
+   charts, and export. Go beyond basics."
+2. **Context (WHY)** — Claude generalizes from reasons. "NEVER use ellipses" → "Output is read by
+   a TTS engine, which can't pronounce ellipses."
+3. **Positive framing** — "Don't use markdown" → "Write flowing prose paragraphs."
+4. **Structure** — XML tags (`<context>`, `<instructions>`, `<output_format>`, `<examples>`);
+   the prompt's own format shapes the response's format.
+5. **Examples** — 2–3 showing the desired behavior; Claude 4.x follows them closely.
+6. **Each instruction once, no shouting** — redundancy and "CRITICAL/MUST" everywhere dilute
+   the instructions that matter.
 
-Triggered by: "write a prompt", "improve prompt", "prompt engineering"
-
-Use these principles when writing or reviewing prompts.
-
-#### Blocking Checks — run before anything else
-
-Two defects make a prompt unexecutable no matter how well it is formatted. They are the same two
-reading checks as Mode 1's Analysis Steps 7-8, applied to a prompt instead of a CLAUDE.md:
-
-1. **Contradictions** — pair up any two instructions that cannot both be obeyed ("write the notes
-   to MIGRATION.md" vs "do not create any new files"). Report both quotes and say which to keep;
-   never report a contradiction without a resolution.
-2. **Vagueness** — instructions carrying no observable criterion ("reasonably fast", "the usual
-   edge cases", "production-ready", "where appropriate"). For each, propose the concrete criterion
-   that was probably meant.
-
-Everything below — structure, XML tags, tone — is cosmetics by comparison.
-
-#### Core Principles
-
-**1. Be Explicit** — say it directly, no ambiguity
-```
-Bad:  Create an analytics dashboard
-Good: Create an analytics dashboard with filtering, charts, and export. Go beyond basics.
-```
-
-**2. Add Context (WHY)** — Claude generalizes from explanations
-```
-Bad:  NEVER use ellipses
-Good: Response will be read by TTS engine, so avoid ellipses since TTS can't pronounce them.
-```
-
-**3. Positive Instructions** — say what TO DO
-```
-Bad:  Do not use markdown
-Good: Compose smoothly flowing prose paragraphs.
-```
-
-**4. XML Tags** — organize structure
-```xml
-<context>...</context>
-<instructions>...</instructions>
-<output_format>...</output_format>
-```
-
-**5. Examples** — show desired behavior (Claude 4.x pays close attention)
-
-**6. Style Matching** — prompt format influences response format
-
-#### Claude 4.x Tips
-
-- **Action-first:** "Implement changes rather than only suggesting them"
-- **Parallel tools:** "Call independent tools in parallel"
-- **Keep simple:** "Only make changes directly requested"
-- **Investigate first:** "Read relevant files before proposing edits"
-
-#### Anti-Patterns
-
-1. Over-engineering: no need for "CRITICAL", "MUST" everywhere
-2. Negative instructions: "Don't X" → "Do Y instead"
-3. Vague modifiers: "be good" → "include X, Y, Z"
-4. Redundant sections: each instruction once
-5. Missing context: always explain WHY
-
-#### Prompt Template
-
-```xml
-<identity>[Role]</identity>
-<context>[Background]</context>
-<instructions>[Steps]</instructions>
-<decision_flow>[When to do what]</decision_flow>
-<output_format>[Response structure]</output_format>
-<examples>[2-3 correct behavior examples]</examples>
-<constraints>[Limits, positive framing]</constraints>
-```
-
-#### Checklist
-
-- [ ] No contradictions (blocking)
-- [ ] No unresolvable vagueness (blocking)
-- [ ] Explicit instructions (no ambiguity)
-- [ ] Context explains WHY
-- [ ] Positive framing (do X, not don't Y)
-- [ ] XML tags for structure
-- [ ] Examples match desired behavior
-- [ ] No redundant sections
-
-#### Report
+Claude 4.x defaults worth stating when wanted: act rather than suggest; call independent tools in
+parallel; change only what was asked; read relevant files before proposing edits.
 
 ```
 Prompt Analysis
-===============
-
-Contradictions: {OK | FOUND: "{rule A}" vs "{rule B}" → keep {which}}
-Vagueness: {OK | FOUND: "{quote}" → suggest "{concrete criterion}"}
-Checklist: {OK | failures listed}
-Anti-patterns: {none | list triggered}
-
+Contradictions: {OK | "{A}" vs "{B}" → keep {which}}
+Vagueness:      {OK | "{quote}" → "{criterion}"}
+Principles:     {OK | which fail}
 Overall: {GOOD | NEEDS ATTENTION | BLOCKED}
 ```
 
-`BLOCKED` whenever a contradiction or an unresolvable vagueness is found — such a prompt cannot be
-executed as written, whatever its formatting. A prompt whose only flaw is cosmetic is at worst
-`NEEDS ATTENTION`. A sound prompt is `GOOD`: say so and stop. Rewriting a prompt that already has
-explicit scope, paths and done-criteria manufactures work and wastes the user's attention.
+`BLOCKED` = a contradiction or unresolvable vagueness — not executable as written. Cosmetic flaws
+only → at worst `NEEDS ATTENTION`. A sound prompt is `GOOD`: say so and stop — rewriting a prompt
+that already has explicit scope, paths and done-criteria manufactures work.
 
 ## References
 
-- `references/prompt-engineering.md` — full detailed prompt engineering guide
-- `references/context-engineering.md` — context engineering principles
-- `references/patterns.md` — command, agent, skill, output style formats
+- `${CLAUDE_PLUGIN_ROOT}/skills/prompt-optimize/references/prompt-engineering.md` — full guide
+- `${CLAUDE_PLUGIN_ROOT}/skills/prompt-optimize/references/context-engineering.md` — context engineering
+- `${CLAUDE_PLUGIN_ROOT}/skills/prompt-optimize/references/patterns.md` — command, agent, skill, output-style formats

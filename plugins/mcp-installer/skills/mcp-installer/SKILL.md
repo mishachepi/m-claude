@@ -1,7 +1,7 @@
 ---
 name: MCP Installer
 description: This skill should be used when the user needs a capability that an MCP server would provide — says "install an MCP for X", "find an MCP server that can Y", "add MCP for...", "какой MCP мне нужен для...", "поставь MCP для...", or a task clearly needs external tool/data access no current MCP provides. Searches for a matching MCP server, always confirms with the user before installing (new creds/network access), then installs it via the current harness's native mechanism.
-version: 1.0.0
+version: 1.0.1
 user-invocable: true
 allowed-tools: Read, Bash(claude:*), Bash(codex:*), Bash(npm:*), Bash(npx:*), WebSearch, WebFetch, AskUserQuestion, Grep, Glob
 ---
@@ -41,7 +41,7 @@ If more than one is present and it's not obvious which one the install should ta
 Read the matching file in `references/` for the exact native command — do not invent syntax for
 a harness whose reference doesn't exist yet in this skill; run `<harness> mcp --help` (or
 equivalent) live, verify the flags, and only then propose the command. Add a reference file for it
-once verified (see `references/README.md` pattern in the existing two files).
+once verified, following the shape of `references/claude-code.md`.
 
 ### 3. Search for a matching server
 

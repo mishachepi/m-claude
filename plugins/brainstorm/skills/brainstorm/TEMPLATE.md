@@ -105,6 +105,5 @@
 ---
 
 **Brainstorm session:**
-- Duration: {time}
 - Interview rounds: {count}
 - Participants: {who}

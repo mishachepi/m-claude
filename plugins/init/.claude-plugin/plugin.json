@@ -1,6 +1,6 @@
 {
   "name": "init",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Set up a project's documentation structure — docs/, CLAUDE.md index, AGENT.md entry point.",
   "author": {
     "name": "Mikhail Chepkin",

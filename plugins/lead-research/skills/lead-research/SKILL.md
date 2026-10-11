@@ -1,10 +1,9 @@
 ---
 name: Lead Research
-description: |
-  This skill should be used when the user asks to "research a topic", "исследуй тему", "изучи вопрос", "найди информацию о", "собери данные о", "сделай анализ", "multi-agent research", "глубокий анализ темы", or needs comprehensive information gathering before making decisions. Provides orchestrator-worker methodology for parallel research with subagents.
-version: 1.0.0
+description: This skill should be used when the user asks to "research a topic", "исследуй тему", "изучи вопрос", "найди информацию о", "собери данные о", "сделай анализ", "multi-agent research", "глубокий анализ темы", or needs comprehensive information gathering before making decisions. Provides orchestrator-worker methodology for parallel research with subagents.
+version: 1.0.1
 user-invocable: true
-allowed-tools: Read, Write, Glob, Grep, WebSearch, WebFetch, Task
+allowed-tools: Read, Write, Glob, Grep, WebSearch, WebFetch, Task, Agent
 ---
 
 # Lead Research Methodology
@@ -131,8 +130,8 @@ Final research report structure:
 ### Reference Files
 
 For detailed methodology:
-- **`references/methodology.md`** - Core principles from Anthropic research
+- **`${CLAUDE_PLUGIN_ROOT}/skills/lead-research/references/methodology.md`** - Core principles from Anthropic research
 
 ### Examples
 
-- **`examples/research-flow.md`** - Example research workflow
+- **`${CLAUDE_PLUGIN_ROOT}/skills/lead-research/examples/research-flow.md`** - Example research workflow

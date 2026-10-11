@@ -1,6 +1,6 @@
 {
   "name": "prompt-optimize",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Prompt engineering guide and CLAUDE.md optimization — Claude 4.x prompt engineering principles, context engineering, and instruction patterns.",
   "author": {
     "name": "Mikhail Chepkin",

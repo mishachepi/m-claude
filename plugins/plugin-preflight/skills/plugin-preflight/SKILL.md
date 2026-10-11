@@ -1,6 +1,7 @@
 ---
-name: plugin-preflight
-description: This skill should be used before pushing or opening a PR in any repo that contains Claude Code plugins or a marketplace — "preflight", "pre-push check", "проверь перед пушем", "check plugins before push", "validate marketplace". Runs a deterministic four-part check and drives fixes until it is green.
+name: Plugin Preflight
+description: This skill should be used before pushing or opening a PR in any repo that contains Claude Code plugins or a marketplace — "preflight", "pre-push check", "проверь перед пушем", "check plugins before push", "validate marketplace". Runs a deterministic five-part check and drives fixes until it is green.
+version: 0.2.0
 user-invocable: true
 allowed-tools: Bash, Read, Edit, Grep, Glob
 ---
@@ -16,6 +17,7 @@ find the problem by hand:
 | 2 | Every `${CLAUDE_PLUGIN_ROOT}/...` path resolves to a real file inside its plugin | `validate` does **not** catch these; they fail silently at runtime |
 | 3 | `name` agrees across dir, `plugin.json`, and `marketplace.json`; versions match; no plugin dir is unregistered; no `<name>@<marketplace>` reference points to a name that does not exist | renames leave stale names and gaps |
 | 4 | Secret scan of the outgoing diff (added lines only) | a pushed secret is public and cached even if deleted later |
+| 5 | Changed plugin without a version bump; SKILL.md `version` ≠ plugin.json | installed plugins are cached per version — an unbumped change never reaches any machine, even with auto-update |
 
 ## Steps
 

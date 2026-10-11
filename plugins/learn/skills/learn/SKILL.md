@@ -1,185 +1,79 @@
 ---
 name: Learn
-description: This skill should be used when the user says "learn", "запомни", "save this learning", "remember this", "let's capture what we learned", "update rules", "add rule", "make this a plugin", "we needed an MCP for this". Captures session learnings as rules, skills, or CLAUDE.local.md updates — or, when the learning is bigger than the project, installs a missing MCP server or ships a new m-claude plugin.
-version: 1.1.0
+description: This skill should be used when the user says "learn", "запомни", "remember this", "save this learning", "update rules", "add rule", "make this a plugin", "we needed an MCP for this", "scion-learn" (its former name for scion agents) — or when the agent itself just hit a tool gotcha, had an assumption refuted, or was corrected. Persists the lesson where the next session will actually read it — project `.claude/`, a scion agent's template, an MCP install, or the m-claude framework itself.
+version: 1.3.0
 user-invocable: true
-allowed-tools: Read, Write, Edit, Bash(mkdir:*), Bash(mktemp:*), Bash(git:*), Bash(gh:*), Bash(claude:*), Glob, Skill, AskUserQuestion
+allowed-tools: Read, Write, Edit, Bash(mkdir:*), Bash(mktemp:*), Bash(git:*), Bash(gh:*), Bash(claude:*), Bash(scion:*), Glob, Skill, AskUserQuestion
 ---
 
 # Learn
 
-Capture learnings from the current session and persist them as actionable improvements: rules, skills, or CLAUDE.local.md updates — and, when the lesson is "we lacked a tool" or "this belongs in every project", an MCP install or a new m-claude plugin.
+Move a lesson out of the transcript (which dies with the session) into the layer the next session
+reads. The whole skill is three questions: is it a lesson, where does it live, write it there.
 
-All artifacts are created **locally** in the current project (`./.claude/`). Never write to global `~/.claude/`. The exceptions: a learning about the m-claude framework itself (**Framework update**) or a new cross-project plugin (**New plugin**) is never written into the current project at all — both go through a clone/PR flow against the m-claude repo; and an **MCP need** is installed through the harness's own `mcp add`, at a scope the user confirms.
+## 1. Get the lesson
 
-## References
+Already stated — as skill arguments or just before invocation → use it, don't ask again.
+Otherwise ask once (AskUserQuestion), free form: "What should I capture from this session?"
 
-When writing prompts for skills or commands, follow best practices from:
-- `${CLAUDE_PLUGIN_ROOT}/references/prompt-engineering.md` — Claude 4.x prompt engineering principles (own copy; source of truth is the `prompt-optimize` plugin, keep in sync when that one changes)
-- `${CLAUDE_PLUGIN_ROOT}/references/framework-update.md` — clone/edit/PR procedure for a learning about m-claude itself
-- `${CLAUDE_PLUGIN_ROOT}/references/new-plugin.md` — scaffolding a new m-claude plugin (files, marketplace registration, validation) on top of that clone/PR procedure
+## 2. Quality gate
 
-## Flow
+- **Its check could have failed.** "Looks like", one truncated run, a command that didn't error but
+  silently ignored a flag — not a lesson yet.
+- **One case is a case, not a class.** Record it marked `(1 case)`, not as a rule.
+- **It names what would refute it.** Can't → it's an opinion.
 
-### 1. Ask What to Remember
+Fails → don't record, or record explicitly as a hypothesis. Not lessons at all: session
+play-by-play (the transcript has it), an unresolved problem (that's a task), a metric (tracked
+data), someone else's lesson (its author records it).
 
-**Skip this step when the learning was already supplied** — as arguments to the skill, or stated in
-the conversation just before it was invoked. Asking a user to retype what they just wrote is the
-fastest way to make a skill annoying. Go straight to Step 2 and classify what you were given.
+## 3. Classify — where it lives
 
-Otherwise ask the user:
+**Scion agent?** If `$SCION_AGENT` is set, your home is ephemeral and `./.claude/` is whatever
+directory you sit in — neither survives a respawn. Your memory is your **template**: follow
+`${CLAUDE_PLUGIN_ROOT}/references/scion-agent.md` for the Rule / Gotcha / Context rows below.
+The MCP, Framework and New-plugin rows work the same for agents and humans.
 
-```
-What would you like to remember from this session?
+| Type | Signal | Destination |
+|---|---|---|
+| **Rule / Gotcha** | "always/never X"; "X fails until you Y" | `./.claude/rules/<name>.md` — one rule per file |
+| **Context** | project facts, decisions, current focus | `./CLAUDE.local.md` |
+| **Skill** | multi-step workflow, this project only | `./.claude/skills/<name>/SKILL.md` |
+| **Command** | simple action, < 10 steps | `./.claude/commands/<name>.md` |
+| **MCP need** | stalled because a tool/data source was missing ("scraped X by hand") | installed MCP server — §4 |
+| **New plugin** | a workflow every project should have, no plugin covers it | new `plugins/<name>/` in m-claude, via PR |
+| **Framework update** | a bug or gap in an installed m-claude plugin itself | PR against `github.com/mishachepi/m-claude` |
 
-Examples:
-- A rule/preference (→ .claude/rules/)
-- A reusable workflow (→ .claude/skills/ or .claude/commands/)
-- Project context update (→ CLAUDE.local.md)
-- A tool we were missing (→ install an MCP server)
-- A workflow every project should have (→ new m-claude plugin)
+Tie-breakers: would it help an unrelated project tomorrow with project specifics stripped? Yes →
+New plugin, no → Skill. Missing *capability* (data, API, system) → MCP; missing *procedure* →
+Skill/plugin. Unsure → ask: a framework fix written into `./.claude/` is silently lost, a project
+preference written into m-claude pollutes every other project.
 
-What should I capture?
-```
+**Check for an existing home first** — Glob the destination directory, read anything on the same
+subject; refine that file instead of creating a second one, and say which you chose.
 
-Use AskUserQuestion. Let the user describe in free form.
+## 4. Confirm, then write
 
-### 2. Classify and Confirm
+Interactive: show type, path and the draft content; wait for yes. Headless (`claude -p`, spawned
+agents, CI): write without waiting, then report path + type in the final output. Overwriting an
+existing file always needs a human — headless, write a sibling and flag the overlap.
 
-Based on the user's response, classify:
+- **Rule / Context / Skill / Command** — write the file. Skills and commands get frontmatter
+  (`name`/`description` = when to trigger, `allowed-tools`) and follow
+  `${CLAUDE_PLUGIN_ROOT}/references/prompt-engineering.md`: explicit steps, the WHY behind each
+  constraint.
+- **MCP need** — hand off to `mcp-installer:mcp-installer` (Skill tool) with the need in one
+  sentence; not installed → run its flow inline: search, present candidates, native `mcp add`,
+  verify with `mcp list`/`get`. **Its own confirmation, always** — approving a lesson is not
+  approving new credentials or network access; headless → report *found, not installed* with the
+  exact command. Afterwards one line in `./CLAUDE.local.md` (what, scope, why) unless installed at
+  user scope.
+- **New plugin** — `${CLAUDE_PLUGIN_ROOT}/references/new-plugin.md`.
+- **Framework update** — `${CLAUDE_PLUGIN_ROOT}/references/framework-update.md`.
 
-| Type | When | Where |
-|------|------|-------|
-| **Rule** | Behavioral preference, coding convention, "always/never do X" | `./.claude/rules/{name}.md` |
-| **Gotcha** | Discovered behavior of a tool or system + the workaround ("X fails until you Y") | `./.claude/rules/{name}.md` |
-| **Skill** | Complex reusable workflow (needs references, multi-step) | `./.claude/skills/{name}/SKILL.md` |
-| **Command** | Simple reusable action (<10 steps) | `./.claude/commands/{name}.md` |
-| **Context update** | Project info, architecture decisions, current focus | `./CLAUDE.local.md` |
-| **Framework update** | The learning is about m-claude itself — a plugin's skill/agent/command, not the current project | PR against `github.com/mishachepi/m-claude` |
-| **New plugin** | A reusable workflow worth having in *every* project, and no existing plugin covers it | New `plugins/<name>/` in m-claude, via PR |
-| **MCP need** | The session stalled or took a detour because a tool/data source was missing ("had to scrape X by hand", "couldn't query Y") | Installed MCP server, via the `mcp-installer` flow |
+Both m-claude paths: fresh clone, new branch, PR — never `main`, never merge; the PR review is the
+human checkpoint for a tool every project uses. Any plugin change bumps its `version`.
 
-A learning classifies as **Framework update** when it's about improving one of the installed m-claude plugins (wrong instructions, a missing step, a bug in a skill/agent/command) rather than about the project currently open. **Skill vs New plugin:** same artifact shape, different reach. Would it help in an unrelated project tomorrow, with the project-specific parts stripped out? Yes → New plugin. No → local Skill. **MCP need** is about a missing *capability* (external data, an API, a system to act on) — a missing *procedure* is a Skill/plugin instead. If unsure which, ask — writing a framework fix into the current project's `./.claude/` silently loses it, and writing a project-specific preference into m-claude pollutes the framework for every other project.
+## 5. Report
 
-**Check for an existing home first.** Glob `./.claude/rules/*.md` (and the relevant sibling
-directory) and read anything on the same subject. If the learning refines something already
-recorded, edit that file instead of creating a second one — two files on one subject means the next
-agent reads whichever it finds first. Say which you chose and why.
-
-Present your classification:
-
-```
-I'll save this as: {type}
-Location: {path}
-Content preview:
-
-{draft content}
-
-Look good?
-```
-
-Wait for user confirmation before saving.
-
-Headless (`AskUserQuestion` unavailable — `claude -p`, spawned agents, CI): save without waiting,
-then report the path and the classification so the choice is visible in the transcript. The user
-asked for the learning to be captured; losing it to an unanswerable prompt serves nobody. Overwriting
-an existing file still needs a human — headless, write a sibling file and flag the overlap instead.
-
-### 3. Save
-
-#### For Rules:
-
-Create `./.claude/rules/{descriptive-name}.md`:
-
-```markdown
-{Rule content — clear, actionable instruction}
-```
-
-Keep rules concise. One rule per file. Name should describe the rule.
-
-#### For Skills:
-
-Create `./.claude/skills/{name}/SKILL.md` with proper frontmatter:
-
-```markdown
----
-name: {Name}
-description: {When to trigger this skill}
-user-invocable: true
-allowed-tools: {tools needed}
----
-
-# {Title}
-
-{Instructions following the prompt-engineering reference principles}
-```
-
-#### For Commands:
-
-Create `./.claude/commands/{name}.md`:
-
-```markdown
----
-description: {one-line description}
-argument-hint: {expected arguments}
-allowed-tools: {tools needed}
----
-
-# {Title}
-
-{Steps}
-```
-
-#### For Context Updates:
-
-Read existing `./CLAUDE.local.md` (create if missing), then append or update the relevant section.
-
-#### For MCP needs:
-
-Hand off to the `mcp-installer` skill (Skill tool, `mcp-installer:mcp-installer`) with the need
-restated in one sentence — it detects the harness, searches, and installs. If that plugin isn't
-installed, follow the same flow yourself: search, present candidates, install with the harness's
-native `mcp add`, verify with its `mcp list`/`get`.
-
-**Always confirm before installing, even though the user already approved "the learning"** —
-approving a lesson is not approving new credentials or network access. Headless: report the
-server as *found, not installed*, with the exact command; never install unattended.
-
-Once installed, record it where the next session will find it: one line in `./CLAUDE.local.md`
-(what the MCP is for, its scope, which lesson prompted it) — unless it was installed at user scope
-for all projects, in which case say so in the report instead.
-
-#### For New plugins:
-
-Follow `${CLAUDE_PLUGIN_ROOT}/references/new-plugin.md` exactly — it builds on
-`framework-update.md` (clone, branch, PR) and adds the scaffold, marketplace registration, and
-validation. One skill = one plugin. `claude plugin validate` must be green before the commit.
-
-#### For Framework Updates:
-
-Follow `${CLAUDE_PLUGIN_ROOT}/references/framework-update.md` exactly — clone m-claude to a scratch
-directory, apply the change there, open a PR. **Never** write the change into the current project,
-and never push straight to `main`. If the machine has no git push credentials configured, the
-reference explains how to stop and hand off cleanly instead of failing silently.
-
-### 4. Offer to Continue
-
-```
-Saved: {path}
-
-Anything else to capture from this session?
-```
-
-If yes, repeat from step 1. If no, done.
-
-## Notes
-
-- Always ask before saving — don't auto-capture (headless: save and report, see Step 2)
-- Never silently overwrite: check `./.claude/rules/` for an existing file on the subject first
-- Keep rules atomic: one concept per rule
-- Everything stays local: `./.claude/` and `./CLAUDE.local.md`
-- Rules take effect immediately in new conversations
-- For skills/commands, follow the prompt-engineering reference principles: be explicit, add context (WHY), use positive instructions
-- MCP installs always get their own confirmation — the learning's approval doesn't cover new credentials or network access
-- New plugins: one skill = one plugin, stripped of project-specific paths/names/secrets, validated before commit
-- Framework updates and new plugins never touch `main` directly — always a fresh clone, a new branch, a PR. The PR review is the human-in-the-loop checkpoint for changes to a tool used across every project
+`Saved: <path> (<type>)` — then "Anything else from this session?" Repeat from §1 or stop.

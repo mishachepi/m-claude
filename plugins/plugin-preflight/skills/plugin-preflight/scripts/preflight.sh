@@ -95,5 +95,34 @@ if command -v gitleaks >/dev/null; then
   gitleaks git --log-opts="$base..HEAD" --redact --no-banner >/dev/null 2>&1 && ok "gitleaks clean" || fail "gitleaks reported findings (run: gitleaks git --log-opts=\"$base..HEAD\" --redact)"
 fi
 
+echo "== 5. versions"
+# Installed plugins are cached per version: a change without a version bump never reaches machines.
+# Compare against the merge target (what machines install from), not the branch's own upstream —
+# otherwise every push of a feature branch would demand another bump.
+vbase=""
+for c in origin/HEAD origin/main main; do
+  git rev-parse -q --verify "$c" >/dev/null 2>&1 && { vbase=$c; break; }
+done
+[ -n "$vbase" ] || vbase=$base
+[ "$(git rev-parse "$vbase" 2>/dev/null)" = "$(git rev-parse HEAD)" ] && vbase=$base
+bumped=0
+for d in "${plugin_dirs[@]}"; do
+  pj="$d/.claude-plugin/plugin.json"
+  [ -f "$pj" ] || continue
+  cur=$(jq -r '.version // ""' "$pj")
+  # SKILL.md frontmatter version must match plugin.json (one skill = one plugin)
+  while IFS= read -r sk; do
+    sv=$(awk 'NR==1&&/^---/{f=1;next} f&&/^---/{exit} f&&/^version:/{print $2}' "$sk")
+    [ -z "$sv" ] || [ "$sv" = "$cur" ] || fail "$sk: version $sv != plugin.json $cur"
+  done < <(find "$d" -name SKILL.md -path '*/skills/*' 2>/dev/null)
+  old=$(git show "$vbase:$d/.claude-plugin/plugin.json" 2>/dev/null | jq -r '.version // ""' 2>/dev/null)
+  [ -n "$old" ] || continue   # new plugin at base — nothing to compare
+  if ! git diff --quiet "$vbase"...HEAD -- "$d" 2>/dev/null || ! git diff --quiet HEAD -- "$d" 2>/dev/null; then
+    if [ "$old" = "$cur" ]; then fail "$d changed since $vbase but version is still $cur — bump plugin.json + marketplace.json"
+    else bumped=$((bumped + 1)); fi
+  fi
+done
+ok "versions checked ($bumped changed plugin(s) bumped, base: $vbase)"
+
 echo
 [ "$fails" -eq 0 ] && { echo "PREFLIGHT GREEN"; exit 0; } || { echo "PREFLIGHT RED — $fails failure(s)"; exit 1; }

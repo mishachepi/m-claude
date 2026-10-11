@@ -6,9 +6,9 @@ Capture session learnings — determinism, evolution loop.
 
 | Type | Name | Color | Purpose |
 |------|------|-------|---------|
-| Command | `/init` | — | Initialize context system (local/global) |
+| Command | `/learn:bootstrap` | — | Initialize context system (local/global) |
 | Agent | `updater` | blue | Create command/skill from completed task |
-| Skill | `learn` | — | Capture session learnings → rules, skills, CLAUDE.local.md; MCP install (via `mcp-installer`); new m-claude plugin / framework fix (clone → PR) |
+| Skill | `learn` | — | Quality gate → rules, skills, CLAUDE.local.md, or a scion agent's template (`references/scion-agent.md`); MCP install (via `mcp-installer`); new m-claude plugin / framework fix (clone → PR) |
 
 ## Dependencies
 

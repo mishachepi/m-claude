@@ -26,12 +26,12 @@ Creates reusable playbooks (command or skill) from completed tasks.
 
 ## Process
 
-### 0. plugin-dev avaliability
+### 0. plugin-dev availability
 First of all make sure that skills:
   - plugin-dev:command-development
   - plugin-dev:skill-development
 
-Are avaliable for you. Otherwise suggetst user to install it via offical claude Maketplace. 
+Are available to you. Otherwise suggest the user install `plugin-dev` from the official Claude marketplace. 
 
 ### 1. Ask Type
 
@@ -69,7 +69,7 @@ agent: {name}    # Optional: delegate to specific agent if exists
 - `agent:` — only if matching subagent exists
 
 ## Remember
-- By default you need to create or update command or skill inlocal .claude directory: `./claude/*` if not specified another
+- By default you need to create or update the command or skill in the local `.claude` directory (`./.claude/*`) unless told otherwise
 
 ## Constraints
 
