@@ -130,6 +130,17 @@
       "source": "./plugins/plugin-preflight",
       "category": "productivity",
       "strict": false
+    },
+    {
+      "name": "arc",
+      "description": "Arc browser MCP server (macOS only) — spaces and tabs, read-only",
+      "version": "1.0.0",
+      "author": {
+        "name": "Mikhail Chepkin"
+      },
+      "source": "./plugins/arc",
+      "category": "productivity",
+      "strict": false
     }
   ]
 }
