@@ -1,6 +1,6 @@
 ---
 name: Learn
-description: This skill should be used when the user says "learn", "запомни", "remember this", "save this learning", "update rules", "add rule", "make this a plugin", "we needed an MCP for this" — or when the agent itself just hit a tool gotcha, had an assumption refuted, or was corrected. Persists the lesson where the next session will actually read it — project `.claude/`, a scion agent's template, an MCP install, or the m-claude framework itself.
+description: This skill should be used when the user says "learn", "запомни", "remember this", "save this learning", "update rules", "add rule", "make this a plugin", "we needed an MCP for this", "scion-learn" (its former name for scion agents) — or when the agent itself just hit a tool gotcha, had an assumption refuted, or was corrected. Persists the lesson where the next session will actually read it — project `.claude/`, a scion agent's template, an MCP install, or the m-claude framework itself.
 version: 1.3.0
 user-invocable: true
 allowed-tools: Read, Write, Edit, Bash(mkdir:*), Bash(mktemp:*), Bash(git:*), Bash(gh:*), Bash(claude:*), Bash(scion:*), Glob, Skill, AskUserQuestion
