@@ -1,7 +1,6 @@
 ---
 name: Lead Research
-description: |
-  This skill should be used when the user asks to "research a topic", "исследуй тему", "изучи вопрос", "найди информацию о", "собери данные о", "сделай анализ", "multi-agent research", "глубокий анализ темы", or needs comprehensive information gathering before making decisions. Provides orchestrator-worker methodology for parallel research with subagents.
+description: This skill should be used when the user asks to "research a topic", "исследуй тему", "изучи вопрос", "найди информацию о", "собери данные о", "сделай анализ", "multi-agent research", "глубокий анализ темы", or needs comprehensive information gathering before making decisions. Provides orchestrator-worker methodology for parallel research with subagents.
 version: 1.0.1
 user-invocable: true
 allowed-tools: Read, Write, Glob, Grep, WebSearch, WebFetch, Task, Agent

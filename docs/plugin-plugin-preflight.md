@@ -7,7 +7,7 @@ Pre-push check for any repo that ships Claude Code plugins.
 | Type | Name | Purpose |
 |------|------|---------|
 | Skill | `plugin-preflight` | Run `scripts/preflight.sh`, fix findings, re-run until green |
-| Script | `preflight.sh` | Deterministic four-part check (exit 0 green / 1 red) |
+| Script | `preflight.sh` | Deterministic five-part check (exit 0 green / 1 red) |
 
 ## Checks
 

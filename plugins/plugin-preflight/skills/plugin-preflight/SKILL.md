@@ -1,6 +1,7 @@
 ---
-name: plugin-preflight
-description: This skill should be used before pushing or opening a PR in any repo that contains Claude Code plugins or a marketplace — "preflight", "pre-push check", "проверь перед пушем", "check plugins before push", "validate marketplace". Runs a deterministic four-part check and drives fixes until it is green.
+name: Plugin Preflight
+description: This skill should be used before pushing or opening a PR in any repo that contains Claude Code plugins or a marketplace — "preflight", "pre-push check", "проверь перед пушем", "check plugins before push", "validate marketplace". Runs a deterministic five-part check and drives fixes until it is green.
+version: 0.2.0
 user-invocable: true
 allowed-tools: Bash, Read, Edit, Grep, Glob
 ---
