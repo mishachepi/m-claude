@@ -1,10 +1,10 @@
 ---
-description: Initialize a CLAUDE.md context file (local project or global) from the core templates
+description: Initialize a CLAUDE.md context file (local project or global) from the learn plugin templates
 argument-hint: [local | global]
 allowed-tools: Bash, Write, Read, Edit, AskUserQuestion
 ---
 
-# Init
+# Bootstrap
 
 Initialize CLAUDE.md with workflow and principles.
 
@@ -55,7 +55,7 @@ Structure:
 ├── commands/        # Custom commands
 └── skills/          # Custom skills
 
-Next: /init local in your projects
+Next: /learn:bootstrap local in your projects
 ```
 
 ---

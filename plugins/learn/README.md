@@ -6,7 +6,7 @@
 
 | Command | Description |
 |---------|-------------|
-| `/init` | Initialize context system (local `CLAUDE.local.md` or global `~/.claude/CLAUDE.md`) |
+| `/learn:bootstrap` | Initialize context system (local `CLAUDE.local.md` or global `~/.claude/CLAUDE.md`) |
 
 ## Skills
 
@@ -27,7 +27,7 @@
 
 ## Context Structure
 
-After `/init local`:
+After `/learn:bootstrap local`:
 
 ```
 ./

@@ -1,7 +1,7 @@
 ---
 name: Learn
 description: This skill should be used when the user says "learn", "запомни", "save this learning", "remember this", "let's capture what we learned", "update rules", "add rule", "make this a plugin", "we needed an MCP for this". Captures session learnings as rules, skills, or CLAUDE.local.md updates — or, when the learning is bigger than the project, installs a missing MCP server or ships a new m-claude plugin.
-version: 1.1.0
+version: 1.2.0
 user-invocable: true
 allowed-tools: Read, Write, Edit, Bash(mkdir:*), Bash(mktemp:*), Bash(git:*), Bash(gh:*), Bash(claude:*), Glob, Skill, AskUserQuestion
 ---

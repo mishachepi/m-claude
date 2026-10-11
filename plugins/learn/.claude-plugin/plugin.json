@@ -1,7 +1,7 @@
 {
   "name": "learn",
-  "version": "1.1.0",
-  "description": "Capture session learnings as rules, skills, or CLAUDE.local.md updates. Includes /init (bootstrap CLAUDE.md) and the updater agent (turn a completed task into a reusable command or skill).",
+  "version": "1.2.0",
+  "description": "Capture session learnings as rules, skills, or CLAUDE.local.md updates. Includes /learn:bootstrap (CLAUDE.md context bootstrap) and the updater agent (turn a completed task into a reusable command or skill).",
   "author": {
     "name": "Mikhail Chepkin",
     "url": "https://github.com/mishachepi"

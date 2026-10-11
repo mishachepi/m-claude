@@ -25,7 +25,7 @@ One skill = one plugin: each installs, enables, and disables independently.
 
 | Plugin | Purpose |
 |--------|---------|
-| **learn** | Capture session learnings; `/init` bootstrap; `updater` agent |
+| **learn** | Capture session learnings; `/learn:bootstrap`; `updater` agent |
 | **prompt-optimize** | Prompt engineering guide + CLAUDE.md optimization |
 | **init** | Set up a project's documentation structure |
 | **update** | Documentation sync from code changes |

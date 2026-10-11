@@ -6,7 +6,7 @@
 
 | Plugin | Purpose |
 |--------|---------|
-| [learn](./plugins/learn/) | Capture session learnings; `/init` bootstrap; `updater` agent |
+| [learn](./plugins/learn/) | Capture session learnings; `/learn:bootstrap`; `updater` agent |
 | [prompt-optimize](./plugins/prompt-optimize/) | Prompt engineering guide + CLAUDE.md optimization |
 | [init](./plugins/init/) | Set up a project's documentation structure |
 | [update](./plugins/update/) | Keep documentation in sync with code changes |
@@ -65,7 +65,7 @@ claude plugin install plugin-preflight@m-claude-plugins
 claude plugin install arc@m-claude-plugins            # macOS only, needs uv
 
 # Initialize in your project
-/init local
+/learn:bootstrap local
 ```
 
 ## Structure
@@ -73,7 +73,7 @@ claude plugin install arc@m-claude-plugins            # macOS only, needs uv
 ```
 m-claude/
 ├── plugins/
-│   ├── learn/           # Skill learn, /init command, updater agent
+│   ├── learn/           # Skill learn, /learn:bootstrap command, updater agent
 │   ├── prompt-optimize/ # Prompt engineering skill
 │   ├── init/             # Docs-structure bootstrap skill
 │   ├── update/           # Docs-sync skill
