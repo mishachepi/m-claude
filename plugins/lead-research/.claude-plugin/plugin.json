@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Orchestrator methodology for multi-agent research — spawns parallel subagents, synthesizes, cites.",
   "author": {
-    "name": "mikhail_chepkin",
+    "name": "Mikhail Chepkin",
     "url": "https://github.com/mishachepi"
   },
   "repository": "https://github.com/mishachepi/m-claude",

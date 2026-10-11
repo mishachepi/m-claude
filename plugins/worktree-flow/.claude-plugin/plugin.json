@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "description": "Parallel Claude Code agents on native git worktrees \u2014 spawn, run, merge. No external binaries.",
   "author": {
-    "name": "mikhail_chepkin",
+    "name": "Mikhail Chepkin",
     "url": "https://github.com/mishachepi"
   },
   "repository": "https://github.com/mishachepi/m-claude",

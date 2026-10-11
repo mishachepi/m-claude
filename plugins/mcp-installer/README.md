@@ -26,9 +26,7 @@ not present on the machine.
 
 - **Always confirm before installing.** An MCP server is new credentials and/or new network
   access. This plugin follows m-claude's own Core Belief #5 (safety by default,
-  human-in-the-loop) rather than auto-installing a match — see the epic note
-  [[mcp-installer plugin discover, install, scaffold companion plugin]] for the open question
-  this resolves.
+  human-in-the-loop) rather than auto-installing a match.
 - **No per-MCP auto-scaffolding.** A `plugin.json` + marketplace entry already *is* a companion
   plugin (confirmed working end to end on `m-claude-plugins`) — this skill installs the MCP
   server itself, it does not generate a wrapper plugin around it.

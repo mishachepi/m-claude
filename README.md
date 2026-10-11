@@ -80,16 +80,11 @@ m-claude/
 │   ├── brainstorm/       # Brainstorming skill
 │   ├── lead-research/    # Research skill + 3 agents
 │   ├── worktree-flow/    # Parallel agents on native git worktrees
-│   └── tg-report/        # Telegram reporting on turn completion
-├── docs/              # Framework documentation
-│   ├── plugin-learn.md
-│   ├── plugin-prompt-optimize.md
-│   ├── plugin-init.md
-│   ├── plugin-update.md
-│   ├── plugin-brainstorm.md
-│   ├── plugin-lead-research.md
-│   ├── plugin-worktree-flow.md
-│   └── plugin-tg-report.md
+│   ├── tg-report/        # Telegram reporting on turn completion
+│   ├── mcp-installer/    # Find and install MCP servers, confirm first
+│   ├── scion/            # scion-learn for agents in a scion mesh
+│   └── plugin-preflight/ # Pre-push check for plugin repos
+├── docs/              # plugin-<name>.md per plugin, prompts_guide/, troubleshooting.md
 └── CLAUDE.md          # Project instructions
 ```
 

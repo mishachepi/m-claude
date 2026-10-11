@@ -39,7 +39,7 @@ plugins/<name>/
   "name": "<name>",
   "version": "0.1.0",
   "description": "<one sentence: what it does and when>",
-  "author": { "name": "mikhail_chepkin", "url": "https://github.com/mishachepi" },
+  "author": { "name": "Mikhail Chepkin", "url": "https://github.com/mishachepi" },
   "repository": "https://github.com/mishachepi/m-claude",
   "keywords": ["<2-4 keywords>"]
 }
