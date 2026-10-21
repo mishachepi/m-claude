@@ -34,7 +34,6 @@ One skill = one plugin: each installs, enables, and disables independently.
 | **brainstorm** | Structured brainstorming → spec document |
 | **lead-research** | Multi-agent research |
 | **worktree-flow** | Parallel Claude Code agents on native git worktrees |
-| **tg-report** | Agents report finished turns to Telegram — summary + attached full answer |
 | **mcp-installer** | Find and install MCP servers, harness-agnostic, always confirm before install |
 | **plugin-preflight** | Pre-push check for plugin repos: validate, `${CLAUDE_PLUGIN_ROOT}` paths, name consistency, secret scan |
 | **arc** | Arc browser MCP server via `uvx` (macOS only), read-only |
@@ -52,7 +51,6 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 | `docs/plugin-brainstorm.md` | brainstorm, spec | Brainstorm plugin components |
 | `docs/plugin-lead-research.md` | research, lead-research | Lead Research plugin components |
 | `docs/plugin-worktree-flow.md` | worktree, parallel agents, merge, tmux | Worktree Flow plugin components |
-| `docs/plugin-tg-report.md` | telegram, report, stop hook, notify | TG Report plugin components |
 | `docs/plugin-plugin-preflight.md` | preflight, pre-push, marketplace check, broken path | Plugin Preflight plugin components |
 | `docs/troubleshooting.md` | error, fails, broken, corrupted | Known gotchas and fixes |
 

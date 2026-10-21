@@ -13,7 +13,6 @@
 | [brainstorm](./plugins/brainstorm/) | Structured brainstorming → spec document |
 | [lead-research](./plugins/lead-research/) | Multi-agent research |
 | [worktree-flow](./plugins/worktree-flow/) | Parallel Claude Code agents on native git worktrees |
-| [tg-report](./plugins/tg-report/) | Agents report finished turns to Telegram |
 | [mcp-installer](./plugins/mcp-installer/) | Find and install MCP servers (harness-agnostic, confirm-first) |
 | [plugin-preflight](./plugins/plugin-preflight/) | Pre-push check for plugin repos: validate, `${CLAUDE_PLUGIN_ROOT}` paths, name consistency, secret scan |
 | [arc](./plugins/arc/) | Arc browser MCP server (macOS only): spaces and tabs, read-only |
@@ -57,7 +56,6 @@ claude plugin install update@m-claude-plugins
 claude plugin install brainstorm@m-claude-plugins
 claude plugin install lead-research@m-claude-plugins
 claude plugin install worktree-flow@m-claude-plugins
-claude plugin install tg-report@m-claude-plugins
 claude plugin install mcp-installer@m-claude-plugins
 claude plugin install plugin-preflight@m-claude-plugins
 claude plugin install arc@m-claude-plugins            # macOS only, needs uv
@@ -78,7 +76,6 @@ m-claude/
 │   ├── brainstorm/       # Brainstorming skill
 │   ├── lead-research/    # Research skill + 3 agents
 │   ├── worktree-flow/    # Parallel agents on native git worktrees
-│   ├── tg-report/        # Telegram reporting on turn completion
 │   ├── mcp-installer/    # Find and install MCP servers, confirm first
 │   └── plugin-preflight/ # Pre-push check for plugin repos
 ├── docs/              # plugin-<name>.md per plugin, prompts_guide/, troubleshooting.md
