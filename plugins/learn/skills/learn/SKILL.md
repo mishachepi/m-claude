@@ -1,7 +1,7 @@
 ---
 name: Learn
 description: This skill should be used when the user says "learn", "запомни", "remember this", "save this learning", "update rules", "add rule", "make this a plugin", "we needed an MCP for this", "scion-learn" (its former name for scion agents) — or when the agent itself just hit a tool gotcha, had an assumption refuted, or was corrected. Persists the lesson where the next session will actually read it — project `.claude/`, a scion agent's template, an MCP install, or the m-claude framework itself.
-version: 1.3.1
+version: 1.3.2
 user-invocable: true
 allowed-tools: Read, Write, Edit, Bash(mkdir:*), Bash(mktemp:*), Bash(git:*), Bash(gh:*), Bash(claude:*), Bash(scion:*), Glob, Skill, AskUserQuestion
 ---
@@ -58,7 +58,9 @@ Interactive: show type, path and the draft content; wait for yes. Headless (`cla
 agents, CI): write without waiting, then report path + type in the final output. Overwriting an
 existing file always needs a human — headless, write a sibling and flag the overlap.
 
-- **Rule / Context / Skill / Command** — write the file. Skills and commands get frontmatter
+- **Rule / Context / Skill / Command** — write the file. Scion agent: after appending, run the boot
+  script and see the new line in its output (`references/scion-agent.md`) — a reference that
+  points to the wrong path loads nothing. Skills and commands get frontmatter
   (`name`/`description` = when to trigger, `allowed-tools`) and follow
   `${CLAUDE_PLUGIN_ROOT}/references/prompt-engineering.md`: explicit steps, the WHY behind each
   constraint.
