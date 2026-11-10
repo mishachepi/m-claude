@@ -1,4 +1,4 @@
-# Init Plugin
+# Docs Init Plugin
 
 > Set up a project's documentation structure.
 
@@ -12,7 +12,7 @@
 
 | Skill | Description |
 |-------|-------------|
-| `init` | Set up docs structure: `docs/`, CLAUDE.md index, AGENT.md |
+| `docs-init` | Set up docs structure: `docs/`, CLAUDE.md index, AGENT.md |
 
 ## Usage
 

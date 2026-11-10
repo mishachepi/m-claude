@@ -1,4 +1,4 @@
-# Init Plugin
+# Docs Init Plugin
 
 Set up a project's documentation structure.
 
@@ -6,7 +6,7 @@ Set up a project's documentation structure.
 
 | Type | Name | Purpose |
 |------|------|---------|
-| Skill | `init` | Create docs/, CLAUDE.md index, AGENT.md |
+| Skill | `docs-init` | Create docs/, CLAUDE.md index, AGENT.md |
 
 ## Flow
 

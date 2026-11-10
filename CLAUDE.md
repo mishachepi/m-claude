@@ -29,8 +29,8 @@ One skill = one plugin: each installs, enables, and disables independently.
 |--------|---------|
 | **learn** | Capture session learnings; `/learn:bootstrap`; `updater` agent |
 | **prompt-optimize** | Prompt engineering guide + CLAUDE.md optimization |
-| **init** | Set up a project's documentation structure |
-| **update** | Documentation sync from code changes |
+| **docs-init** | Set up a project's documentation structure |
+| **docs-update** | Documentation sync from code changes |
 | **brainstorm** | Structured brainstorming → spec document |
 | **lead-research** | Multi-agent research |
 | **worktree-flow** | Parallel Claude Code agents on native git worktrees |
@@ -44,13 +44,15 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 
 | File | Triggers | Purpose |
 |------|----------|---------|
-| `docs/plugin-learn.md` | learn, init, self-learning, bootstrap | Learn plugin components |
+| `docs/plugin-learn.md` | learn, self-learning, bootstrap | Learn plugin components |
 | `docs/plugin-prompt-optimize.md` | prompt-optimize, prompt engineering | Prompt Optimize plugin components |
-| `docs/plugin-init.md` | init docs, documentation setup | Init plugin components |
-| `docs/plugin-update.md` | update docs | Update plugin components |
+| `docs/plugin-docs-init.md` | docs-init, init docs, documentation setup | Docs Init plugin components |
+| `docs/plugin-docs-update.md` | docs-update, update docs | Docs Update plugin components |
 | `docs/plugin-brainstorm.md` | brainstorm, spec | Brainstorm plugin components |
 | `docs/plugin-lead-research.md` | research, lead-research | Lead Research plugin components |
 | `docs/plugin-worktree-flow.md` | worktree, parallel agents, merge, tmux | Worktree Flow plugin components |
+| `docs/plugin-mcp-installer.md` | mcp-installer, install MCP, find MCP server | MCP Installer plugin components |
+| `docs/plugin-arc.md` | arc, arc-mcp, browser tabs | Arc plugin components |
 | `docs/plugin-plugin-preflight.md` | preflight, pre-push, marketplace check, broken path | Plugin Preflight plugin components |
 | `docs/troubleshooting.md` | error, fails, broken, corrupted | Known gotchas and fixes |
 
@@ -60,5 +62,6 @@ Project documentation lives in `docs/`. Load relevant files when working on rela
 |------|--------|---------|
 | plugin-dev | learn (updater agent) | Claude Code marketplace |
 | tmux | worktree-flow | `brew install tmux` |
+| uv | arc | `brew install uv` |
 
 Don't forget to update README.md after changes.

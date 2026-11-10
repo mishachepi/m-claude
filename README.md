@@ -8,8 +8,8 @@
 |--------|---------|
 | [learn](./plugins/learn/) | Capture session learnings; `/learn:bootstrap`; `updater` agent |
 | [prompt-optimize](./plugins/prompt-optimize/) | Prompt engineering guide + CLAUDE.md optimization |
-| [init](./plugins/init/) | Set up a project's documentation structure |
-| [update](./plugins/update/) | Keep documentation in sync with code changes |
+| [docs-init](./plugins/docs-init/) | Set up a project's documentation structure |
+| [docs-update](./plugins/docs-update/) | Keep documentation in sync with code changes |
 | [brainstorm](./plugins/brainstorm/) | Structured brainstorming → spec document |
 | [lead-research](./plugins/lead-research/) | Multi-agent research |
 | [worktree-flow](./plugins/worktree-flow/) | Parallel Claude Code agents on native git worktrees |
@@ -41,6 +41,7 @@ Request → Playbook exists? → Execute
 | Claude Code | all | https://claude.ai/code |
 | plugin-dev | learn (updater agent) | Claude Code marketplace |
 | tmux | worktree-flow | `brew install tmux` |
+| uv | arc | `brew install uv` |
 
 ## Quick Start
 
@@ -51,8 +52,8 @@ claude plugin marketplace add mishachepi/m-claude
 # Install the plugins you want
 claude plugin install learn@m-claude-plugins
 claude plugin install prompt-optimize@m-claude-plugins
-claude plugin install init@m-claude-plugins
-claude plugin install update@m-claude-plugins
+claude plugin install docs-init@m-claude-plugins
+claude plugin install docs-update@m-claude-plugins
 claude plugin install brainstorm@m-claude-plugins
 claude plugin install lead-research@m-claude-plugins
 claude plugin install worktree-flow@m-claude-plugins
@@ -71,13 +72,14 @@ m-claude/
 ├── plugins/
 │   ├── learn/           # Skill learn, /learn:bootstrap command, updater agent
 │   ├── prompt-optimize/ # Prompt engineering skill
-│   ├── init/             # Docs-structure bootstrap skill
-│   ├── update/           # Docs-sync skill
-│   ├── brainstorm/       # Brainstorming skill
-│   ├── lead-research/    # Research skill + 3 agents
-│   ├── worktree-flow/    # Parallel agents on native git worktrees
-│   ├── mcp-installer/    # Find and install MCP servers, confirm first
-│   └── plugin-preflight/ # Pre-push check for plugin repos
+│   ├── docs-init/       # Docs-structure bootstrap skill
+│   ├── docs-update/     # Docs-sync skill
+│   ├── brainstorm/      # Brainstorming skill
+│   ├── lead-research/   # Research skill + 3 agents
+│   ├── worktree-flow/   # Parallel agents on native git worktrees
+│   ├── mcp-installer/   # Find and install MCP servers, confirm first
+│   ├── plugin-preflight/ # Pre-push check for plugin repos
+│   └── arc/             # Arc browser MCP server (macOS)
 ├── docs/              # plugin-<name>.md per plugin, prompts_guide/, troubleshooting.md
 └── CLAUDE.md          # Project instructions
 ```

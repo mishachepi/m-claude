@@ -1,4 +1,4 @@
-# Update Plugin
+# Docs Update Plugin
 
 Keep documentation in sync with code changes.
 
@@ -6,7 +6,7 @@ Keep documentation in sync with code changes.
 
 | Type | Name | Purpose |
 |------|------|---------|
-| Skill | `update` | Update docs from git diff (staged/commit) |
+| Skill | `docs-update` | Update docs from git diff (staged/commit) |
 
 ## Flow
 
@@ -24,4 +24,4 @@ code changes → git add        → stage
 
 ## Requires
 
-The `init` plugin's docs structure to already exist.
+The `docs-init` plugin's docs structure to already exist.
