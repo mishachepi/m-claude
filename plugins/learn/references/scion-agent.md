@@ -38,5 +38,10 @@ Hypotheses carry `(hypothesis, 1 case)`. File missing → create it with
 
 - **Never edit or delete existing lines** — promotion into the system prompt and cleanup happen in
   template revision, not ad hoc.
-- **Make sure it's loaded at boot:** `agents.md` (or the template's context script) must reference
-  `lessons.md`; if it doesn't, add one reference line — otherwise the lessons are never read.
+- **Make sure it's loaded at boot — by running it, not by reading it.** `agents.md` (or the
+  template's context script) must reference `lessons.md`; if it doesn't, add one reference line.
+  Then run the boot script the way the agent does (e.g. `bash "$SCION_AGENT_HOME/context.sh"`) and
+  confirm the new line appears in its output. A reference that resolves to the wrong path looks
+  correct and loads nothing — a context script that resolved `lessons.md` next to the agent home
+  instead of the template printed "(none yet)" on every boot for weeks (1 case).
+- **Write lessons in English** — they are instructions loaded into every run, not conversation.
