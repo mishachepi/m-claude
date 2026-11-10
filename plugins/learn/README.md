@@ -22,7 +22,6 @@
 
 ## Dependencies
 
-- **qmd**, **obsidian** (auto-installed) — vault search used by the learn/context loop
 - **plugin-dev** — needed by `updater` when creating commands/skills ([marketplace](https://github.com/anthropics/claude-plugins-official))
 
 ## Context Structure

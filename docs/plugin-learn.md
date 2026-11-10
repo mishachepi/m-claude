@@ -12,7 +12,6 @@ Capture session learnings — determinism, evolution loop.
 
 ## Dependencies
 
-- **qmd**, **obsidian** — auto-installed cross-marketplace deps, vault search for the learn loop
 - **plugin-dev** — for `updater` when creating commands/skills
 - **mcp-installer** (optional, same marketplace) — `learn` hands MCP-need learnings to it; without it, `learn` runs the same confirm-first flow inline
 

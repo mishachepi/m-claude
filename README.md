@@ -14,7 +14,6 @@
 | [lead-research](./plugins/lead-research/) | Multi-agent research |
 | [worktree-flow](./plugins/worktree-flow/) | Parallel Claude Code agents on native git worktrees |
 | [mcp-installer](./plugins/mcp-installer/) | Find and install MCP servers (harness-agnostic, confirm-first) |
-| [plugin-preflight](./plugins/plugin-preflight/) | Pre-push check for plugin repos: validate, `${CLAUDE_PLUGIN_ROOT}` paths, name consistency, secret scan |
 | [arc](./plugins/arc/) | Arc browser MCP server (macOS only): spaces and tabs, read-only |
 
 One skill = one plugin: each installs, enables, and disables independently.
@@ -58,7 +57,6 @@ claude plugin install brainstorm@m-claude-plugins
 claude plugin install lead-research@m-claude-plugins
 claude plugin install worktree-flow@m-claude-plugins
 claude plugin install mcp-installer@m-claude-plugins
-claude plugin install plugin-preflight@m-claude-plugins
 claude plugin install arc@m-claude-plugins            # macOS only, needs uv
 
 # Initialize in your project
@@ -78,8 +76,8 @@ m-claude/
 │   ├── lead-research/   # Research skill + 3 agents
 │   ├── worktree-flow/   # Parallel agents on native git worktrees
 │   ├── mcp-installer/   # Find and install MCP servers, confirm first
-│   ├── plugin-preflight/ # Pre-push check for plugin repos
 │   └── arc/             # Arc browser MCP server (macOS)
+├── scripts/preflight.sh  # Pre-push check: run before every push
 ├── docs/              # plugin-<name>.md per plugin, prompts_guide/, troubleshooting.md
 └── CLAUDE.md          # Project instructions
 ```
