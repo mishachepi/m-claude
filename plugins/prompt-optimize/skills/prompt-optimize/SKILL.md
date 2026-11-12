@@ -1,7 +1,7 @@
 ---
 name: Prompt Optimize
 description: This skill should be used when the user asks to "optimize CLAUDE.md", "check my prompts", "improve prompt", "prompt engineering", "оптимизируй", "проверь CLAUDE.md", "prompt best practices", "fix my prompt", or needs to write, improve, or audit prompts and CLAUDE.md files.
-version: 1.0.1
+version: 1.1.0
 user-invocable: true
 allowed-tools: Read, Edit, Glob, AskUserQuestion
 ---
@@ -68,6 +68,9 @@ After the blocking checks, apply the principles:
 Claude 4.x defaults worth stating when wanted: act rather than suggest; call independent tools in
 parallel; change only what was asked; read relevant files before proposing edits.
 
+For prompts aimed at coding agents, suggest fitting directives from `references/directives.md`
+(fix the cause, check sources over training, name assumptions, report verified vs unverified).
+
 ```
 Prompt Analysis
 Contradictions: {OK | "{A}" vs "{B}" → keep {which}}
@@ -85,3 +88,4 @@ that already has explicit scope, paths and done-criteria manufactures work.
 - `${CLAUDE_PLUGIN_ROOT}/skills/prompt-optimize/references/prompt-engineering.md` — full guide
 - `${CLAUDE_PLUGIN_ROOT}/skills/prompt-optimize/references/context-engineering.md` — context engineering
 - `${CLAUDE_PLUGIN_ROOT}/skills/prompt-optimize/references/patterns.md` — command, agent, skill, output-style formats
+- `${CLAUDE_PLUGIN_ROOT}/skills/prompt-optimize/references/directives.md` — reusable directives for planning, debugging, refactoring

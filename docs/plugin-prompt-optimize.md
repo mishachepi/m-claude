@@ -13,3 +13,4 @@ Prompt engineering guide + CLAUDE.md audit.
 - `references/prompt-engineering.md` — Claude 4.x principles
 - `references/context-engineering.md` — context-window discipline
 - `references/patterns.md` — instruction patterns
+- `references/directives.md` — reusable directives for planning, debugging, refactoring

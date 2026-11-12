@@ -13,3 +13,4 @@
 - `references/prompt-engineering.md` — core principles
 - `references/context-engineering.md` — context-window discipline
 - `references/patterns.md` — instruction patterns
+- `references/directives.md` — reusable directives for planning, debugging, refactoring
